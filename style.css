@@ -37,5 +37,11 @@
 	color:#FF0004;
 }
 .selAnswer {
+	background: #ecc6d9;
+}
+.greenBox {
 	background: #4E9267;
+}
+.redBox {
+	background: #ff0000;
 }
