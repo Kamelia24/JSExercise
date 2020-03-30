@@ -5,7 +5,7 @@ var myAnswers = [];
     ["What is addEventListener() used for?", 1, "attach a click event", "nothing", "never use it", "listens to HTML"],
     ["What does DOM stand for", 1, "Document Object Model ", "Document Over Mountains", "Do Over Models", "Nothing"],
     ["What does BOM stand for", 4, "document Object Model", "nothing", "Big Object Model", " Browser Object Model "]
-];*/
+];
 var myQuiz = [
     question1={
         question:"What is addEventListener() used for?",
@@ -23,7 +23,7 @@ var myQuiz = [
         correct:"Browser Object Model"
     }
 ]
-
+*/
 var myHeader = document.getElementById("quizHeader");
 var classname = document.getElementsByClassName("answer");
 var myQuestion = document.getElementById("questions");
@@ -34,7 +34,9 @@ var btnFinish = document.getElementById("finishQuiz");
 checkPage();
 btnNext.addEventListener("click", moveNext);
 btnPrevious.addEventListener("click", moveBack);
-btnFinish.addEventListener("click", endQuiz);
+btnFinish.addEventListener("click", check);
+btnYes.addEventListener("click",endQuiz);
+btnNo.addEventListener("click",reload);
 for (var i = 0; i < classname.length; i++) {
     classname[i].addEventListener('click', myAnswer, false);
 }
@@ -43,10 +45,10 @@ function myAnswer() {
     var idAnswer = this.getAttribute("data-id");
     /// check for correct answer
     myAnswers[curPage] = idAnswer;
-    if (myQuiz[curPage].correct == myQuiz[curPage].answers[idAnswer-1]) {
-        console.log('Correct Answer');
+    if (myQuiz[curPage].correct == myQuiz[curPage].answers[idAnswer-1] ) {
+        //console.log('Correct Answer');
     } else {
-        console.log('Wrong Answer');
+        //console.log('Wrong Answer');
     }
     addBox();
 }
@@ -64,7 +66,7 @@ function addBox() {
 
 function moveNext() {
     ///check if an answer has been made
-    if (myAnswers[curPage]) {
+   // if (myAnswers[curPage]) {
         //console.log('okay to proceed');
         if (curPage < (myQuiz.length - 1)) {
             curPage++;
@@ -78,30 +80,56 @@ function moveNext() {
                 //console.log('end of quiz Page ' + curPage);
             }
         }
-    } else {
+    //} else {
         //console.log('not answered');
-    }
+   // }
 }
+function check(){
+    if(myAnswers.length !=myQuiz.length){
+        //output='<p style="text-align:center;font-size:2.5em">You have unanswered questions.<br>Are you sure you want to finish?</p>';
+        //document.getElementById("quizContent").innerHTML = output;
+        finishing.classList.remove("hide");
+        btnYes.classList.remove("hide");
+        btnNo.classList.remove("hide");
+        quizContent.classList.add("hide");
 
+    }
+    else{endQuiz();}
+}
+function reload(){
+    curPage=0;
+    console.log(curPage);
+        finishing.classList.add("hide");
+        btnYes.classList.add("hide");
+        btnNo.classList.add("hide");
+        quizContent.classList.remove("hide");
+    checkPage(curPage);
+}
 function endQuiz() {
-    if (myAnswers[2]) {
+    //if (myAnswers[2]) {
+        btnYes.classList.add("hide");
+        btnNo.classList.add("hide");
+        finishing.classList.add("hide");
+        quizContent.classList.remove("hide");
         var output = "<div class='output'>Quiz Results<BR>";
         var questionResult = "NA";
         //console.log('Quiz Over');
-        for (var i = 0; i < myAnswers.length; i++) {
+        console.log(myAnswers.length);
+        for (var i = 0; i < myQuiz.length; i++) {
             if (myQuiz[i].correct == myAnswers[i]) {
                 questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
                 correct++;
-            } else {
+            } else if(myQuiz[i].correct!=myAnswers[i] && myAnswers[i]){
                 questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
-            }
+            }else {questionResult = '<span>Not Answered</span>'}
+            
             output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
         }
         output = output + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
         document.getElementById("quizContent").innerHTML = output;
-    } else {
+  //  } else {
         //console.log('not answered');
-    }
+   // }
 }
 
 function checkPage(i) {
