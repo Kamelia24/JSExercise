@@ -31,6 +31,8 @@ var progressBar = document.getElementById("progressBar");
 var btnNext = document.getElementById("btnNext");
 var btnPrevious = document.getElementById("btnPrevious");
 var btnFinish = document.getElementById("finishQuiz");
+var stat=document.getElementById("statistics").childNodes;
+//console.log(stat);
 checkPage();
 btnNext.addEventListener("click", moveNext);
 btnPrevious.addEventListener("click", moveBack);
@@ -40,7 +42,10 @@ btnNo.addEventListener("click",reload);
 for (var i = 0; i < classname.length; i++) {
     classname[i].addEventListener('click', myAnswer, false);
 }
-
+for (var i = 1; i < stat.length; i++) {
+    stat[i].addEventListener('click',checked,false);
+    //console.log(stat[i],i)
+}
 function myAnswer() {
     var idAnswer = this.getAttribute("data-id");
     /// check for correct answer
@@ -52,7 +57,11 @@ function myAnswer() {
     }
     addBox();
 }
-
+function checked(){
+    var i=this.getAttribute("id");
+    console.log("btn",i, "is clicked")
+    checkPage(i-1);
+}
 function addBox() {
     for (var i = 0; i < myQuestion.children.length; i++) {
         var curNode = myQuestion.children[i];
@@ -111,18 +120,23 @@ function reload(){
     checkPage(curPage);
 }
 function output(){
-    var output1="Question status";
+    var output1="Question status <br>";
     var result=" ";
     for (var i = 0; i < myQuiz.length; i++) {
         if ( myAnswers[i]) {
-            result = '<span" aria-hidden="true">Answered</span>';
+            result = 'Answered';
             correct++;
-        }else {result = '<span>Not Answered</span>'}
+        }else {result = 'Not Answered'}
         
-        output1 = output1 + '<p>Question ' + (i + 1) + '==> ' + result + '</p> ';
+        output1 = output1 + '<p id="i" class="btn" >Question ' + (i + 1) + '==> ' + result + ' </p><br> ';
+        
     }
     //output1 = output1 + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
     document.getElementById("statistics").innerHTML = output1;
+    for(var i=1;i<=myQuiz.length;i++){
+        //console.log(stat.length);
+    document.getElementById("i").id = i;
+    }
 }
 function endQuiz() {
     //if (myAnswers[2]) {
@@ -152,6 +166,8 @@ function endQuiz() {
 }
 
 function checkPage(i) {
+    console.log("thissss",i);
+    if(i!=undefined){curPage=i;}
     /// add remove disabled buttons if there are no more questions in que
     if (curPage == 0) {
         btnPrevious.classList.add("hide");
@@ -164,6 +180,7 @@ function checkPage(i) {
         btnNext.classList.add("hide");
         btnFinish.classList.remove("hide");
     }
+    console.log(myQuiz[curPage])
     myHeader.innerHTML = myQuiz[curPage].question;///add question
     for (var i = 0; i < myQuestion.children.length; i++) {
         var curNode = myQuestion.children[i];
