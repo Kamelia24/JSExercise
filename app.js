@@ -85,7 +85,12 @@ function moveNext() {
    // }
 }
 function check(){
-    if(myAnswers.length !=myQuiz.length){
+    var isAnswered=false;
+    for(let i=0;i<myAnswers.length;i++){
+        console.log(myAnswers[i]);
+        if(myAnswers[i]===undefined){isAnswered=true;}
+    }
+    if(isAnswered){
         //output='<p style="text-align:center;font-size:2.5em">You have unanswered questions.<br>Are you sure you want to finish?</p>';
         //document.getElementById("quizContent").innerHTML = output;
         finishing.classList.remove("hide");
@@ -104,6 +109,20 @@ function reload(){
         btnNo.classList.add("hide");
         quizContent.classList.remove("hide");
     checkPage(curPage);
+}
+function output(){
+    var output1="Question status";
+    var result=" ";
+    for (var i = 0; i < myQuiz.length; i++) {
+        if ( myAnswers[i]) {
+            result = '<span" aria-hidden="true">Answered</span>';
+            correct++;
+        }else {result = '<span>Not Answered</span>'}
+        
+        output1 = output1 + '<p>Question ' + (i + 1) + '==> ' + result + '</p> ';
+    }
+    //output1 = output1 + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
+    document.getElementById("statistics").innerHTML = output1;
 }
 function endQuiz() {
     //if (myAnswers[2]) {
@@ -178,6 +197,7 @@ function checkPage(i) {
     var increment = Math.ceil((curPage) / (myQuiz.length) * 100);
     progressBar.style.width = (increment) + '%';
     progressBar.innerHTML = (increment) + '%';
+    output();
 }
 
 function moveBack() {
