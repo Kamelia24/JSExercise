@@ -43,6 +43,7 @@ for (var i = 0; i < classname.length; i++) {
     classname[i].addEventListener('click', myAnswer, false);
 }
 for (var i = 1; i < stat.length; i++) {
+    
     stat[i].addEventListener('click',checked,false);
     //console.log(stat[i],i)
 }
@@ -50,6 +51,7 @@ function myAnswer() {
     var idAnswer = this.getAttribute("data-id");
     /// check for correct answer
     myAnswers[curPage] = idAnswer;
+    console.log(myAnswers)
     if (myQuiz[curPage].correct == myQuiz[curPage].answers[idAnswer-1] ) {
         //console.log('Correct Answer');
     } else {
@@ -95,11 +97,12 @@ function moveNext() {
 }
 function check(){
     var isAnswered=false;
-    for(let i=0;i<myAnswers.length;i++){
-        console.log(myAnswers[i]);
+    for(let i=0;i<myQuiz.length;i++){
+        console.log(myAnswers[i]);console.log("not answered")
         if(myAnswers[i]===undefined){isAnswered=true;}
     }
     if(isAnswered){
+        
         //output='<p style="text-align:center;font-size:2.5em">You have unanswered questions.<br>Are you sure you want to finish?</p>';
         //document.getElementById("quizContent").innerHTML = output;
         finishing.classList.remove("hide");
@@ -120,22 +123,23 @@ function reload(){
     checkPage(curPage);
 }
 function output(){
-    var output1="Question status <br>";
+    
     var result=" ";
-    for (var i = 0; i < myQuiz.length; i++) {
+    for (var i = 0; i < myQuiz.length; i++) {var output1=" ";
         if ( myAnswers[i]) {
             result = 'Answered';
             correct++;
         }else {result = 'Not Answered'}
         
-        output1 = output1 + '<p id="i" class="btn" >Question ' + (i + 1) + '==> ' + result + ' </p><br> ';
-        
+        output1 = output1 + 'Question ' + (i + 1) + '==> ' + result + ' <br> ';
+        //console.log(document.getElementsByTagName("p"));
+        document.getElementsByTagName("p")[i].innerHTML = output1;
     }
     //output1 = output1 + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
-    document.getElementById("statistics").innerHTML = output1;
+    
     for(var i=1;i<=myQuiz.length;i++){
         //console.log(stat.length);
-    document.getElementById("i").id = i;
+    //document.getElementById("i").id = i;
     }
 }
 function endQuiz() {
