@@ -1,29 +1,14 @@
-var curPage = 0,
-    correct = 0;
+er.classList.add("hide");
+var curPage = 0;
+var  corrected = 0;
 var myAnswers = [];
 /*var myQuiz = [
     ["What is addEventListener() used for?", 1, "attach a click event", "nothing", "never use it", "listens to HTML"],
     ["What does DOM stand for", 1, "Document Object Model ", "Document Over Mountains", "Do Over Models", "Nothing"],
     ["What does BOM stand for", 4, "document Object Model", "nothing", "Big Object Model", " Browser Object Model "]
-];
-var myQuiz = [
-    question1={
-        question:"What is addEventListener() used for?",
-        answers:["attach a click event","nothing","never use it","listens to HTML"],
-        correct:"attach a click event"
-    },
-    question1={
-        question:"What does DOM stand for?",
-        answers:["Document Over Mountains","Document Object Model","Do Over Models","Nothing"],
-        correct:"Document Object Model"
-    },
-    question1={
-        question:"What does BOM stand for?",
-        answers:["document Object Model","nothing","Big Object Model","Browser Object Model"],
-        correct:"Browser Object Model"
-    }
-]
-*/
+];*/
+var myQuiz = []
+
 var myHeader = document.getElementById("quizHeader");
 var classname = document.getElementsByClassName("answer");
 var myQuestion = document.getElementById("questions");
@@ -32,8 +17,10 @@ var btnNext = document.getElementById("btnNext");
 var btnPrevious = document.getElementById("btnPrevious");
 var btnFinish = document.getElementById("finishQuiz");
 var stat=document.getElementById("statistics").childNodes;
+var con=document.getElementById("submit");
+con.addEventListener("click",FinalSort);
 //console.log(stat);
-checkPage();
+//checkPage();
 btnNext.addEventListener("click", moveNext);
 btnPrevious.addEventListener("click", moveBack);
 btnFinish.addEventListener("click", check);
@@ -47,6 +34,39 @@ for (var i = 1; i < stat.length; i++) {
     stat[i].addEventListener('click',checked,false);
     //console.log(stat[i],i)
 }
+var cat;
+var dif;
+function sortByCategory(){
+    //console.log("im in")
+    cat=document.getElementById("category").value;
+    console.log(cat);
+}
+//console.log(cat)
+function sortByDifficulty(){
+    //console.log("im in2")
+    dif=document.getElementById("difficulty").value;
+    console.log(dif)
+}
+function FinalSort(){
+    var kolko=0;
+    console.log(cat,dif)
+if(cat!=undefined && dif!=undefined){
+console.log("continue");
+for(var i=0;i<myQuizall.length;i++){
+    if(myQuizall[i].category==cat && myQuizall[i].difficulty==dif){
+        myQuiz[kolko]=myQuizall[i];kolko++;
+    }
+}
+//console.log(myQuiz)
+beginning.classList.add("hide");
+quizContent.classList.remove("hide");
+
+checkPage();
+}else{
+    console.log("nope")
+    er.classList.remove("hide");
+}
+}
 function myAnswer() {
     var idAnswer = this.getAttribute("data-id");
     /// check for correct answer
@@ -54,6 +74,7 @@ function myAnswer() {
     console.log(myAnswers)
     if (myQuiz[curPage].correct == myQuiz[curPage].answers[idAnswer-1] ) {
         //console.log('Correct Answer');
+        //console.log(myQuiz[curPage].correct,myQuiz[curPage].answers[idAnswer-1])
     } else {
         //console.log('Wrong Answer');
     }
@@ -65,11 +86,14 @@ function checked(){
     checkPage(i-1);
 }
 function addBox() {
+    
     for (var i = 0; i < myQuestion.children.length; i++) {
         var curNode = myQuestion.children[i];
         if (myAnswers[curPage] == (i + 1)) {
             curNode.classList.add("selAnswer");
+            console.log(myAnswers[curPage],(i + 1))
         } else {
+            console.log(myAnswers[curPage],(i + 1))
             curNode.classList.remove("selAnswer");
         }
     }
@@ -125,15 +149,17 @@ function reload(){
 function output(){
     
     var result=" ";
-    for (var i = 0; i < myQuiz.length; i++) {var output1=" ";
+    for (var i = 0; i < myQuiz.length; i++) {
+        var output1=" ";
         if ( myAnswers[i]) {
             result = 'Answered';
-            correct++;
+            
         }else {result = 'Not Answered'}
         
         output1 = output1 + 'Question ' + (i + 1) + '==> ' + result + ' <br> ';
+        console.log(document.getElementsByTagName("p")[i+1]);
         //console.log(document.getElementsByTagName("p"));
-        document.getElementsByTagName("p")[i].innerHTML = output1;
+        document.getElementsByTagName("p")[i+1].innerHTML = output1;
     }
     //output1 = output1 + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
     
@@ -153,16 +179,18 @@ function endQuiz() {
         //console.log('Quiz Over');
         console.log(myAnswers.length);
         for (var i = 0; i < myQuiz.length; i++) {
-            if (myQuiz[i].correct == myAnswers[i]) {
+            console.log(myQuiz[i].correct,myQuiz[i].answers[myAnswers[i]-1])
+            if (myQuiz[i].correct == myQuiz[i].answers[myAnswers[i]-1]) {
                 questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
-                correct++;
-            } else if(myQuiz[i].correct!=myAnswers[i] && myAnswers[i]){
+                console.log(myQuiz[i].correct,myQuiz[i].answers[myAnswers[i]-1])
+                corrected++;
+            } else if(myQuiz[i].correct!=myQuiz[i].answers[myAnswers[i]-1] && myAnswers[i]){
                 questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
             }else {questionResult = '<span>Not Answered</span>'}
             
             output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
         }
-        output = output + '<p>You scored ' + correct + ' out of ' + myQuiz.length + '</p></div> ';
+        output = output + '<p>You scored ' + corrected + ' out of ' + myQuiz.length + '</p></div> ';
         document.getElementById("quizContent").innerHTML = output;
   //  } else {
         //console.log('not answered');
