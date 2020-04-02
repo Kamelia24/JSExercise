@@ -1,17 +1,65 @@
-var myQuiz = [
+var myQuizall = [
     question1={
         question:"What is addEventListener() used for?",
         answers:["attach a click event","nothing","never use it","listens to HTML"],
-        correct:"attach a click event"
+        correct:"attach a click event",
+        category:"js",
+        difficulty:"easy"
     },
     question1={
         question:"What does DOM stand for?",
         answers:["Document Over Mountains","Document Object Model","Do Over Models","Nothing"],
-        correct:"Document Object Model"
+        correct:"Document Object Model",
+        category:"js",
+        difficulty:"difficult"
     },
     question1={
         question:"What does BOM stand for?",
         answers:["document Object Model","nothing","Big Object Model","Browser Object Model"],
-        correct:"Browser Object Model"
+        correct:"Browser Object Model",
+        category:'js',
+        difficulty:"easy"
+    },
+    question1={
+        question:"What is HTML?",
+        answers:["Hyper Text Markup Language","nothing","hig tbject Model lyrics","Browser Object Model"],
+        correct:"Hyper Text Markup Language",
+        category:'html',
+        difficulty:'difficult'
+    },
+    question1={
+        question:"What does script stand for?",
+        answers:["tag","nothing","Big Object Model","Browser Object Model"],
+        correct:"tag",
+        category:'html',
+        difficulty:'easy'
+    },
+    question1={
+        question:"What does class stand for?",
+        answers:["class","nothing","Big Object Model","Browser Object Model"],
+        correct:"class",
+        category:"html",
+        difficulty:"easy"
+    },
+    question1={
+        question:"What does text stand for?",
+        answers:["text","nothing","Big Object Model","Browser Object Model"],
+        correct:"text",
+        category:"css",
+        difficulty:"easy"
+    },
+    question1={
+        question:"What does BOM stand for?",
+        answers:["document Object Model","nothing","Big Object Model","Browser Object Model"],
+        correct:"Browser Object Model",
+        category:"css",
+        difficulty:"easy"
+    },
+    question1={
+        question:"What does color stand for?",
+        answers:["color","nothing","Big Object Model","Browser Object Model"],
+        correct:"color",
+        category:'css',
+        difficulty:"difficult"
     }
 ]
