@@ -5,11 +5,30 @@
 <title>JavaScript Quiz Project</title>
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="mainCSS.css">
+
 </head>
 <body>
 <div class="container">
   <h1>Welcome to my Quiz</h1>
-  <div id="quizContent" class="row quiz">
+  <br>
+  <div id="beginning" >
+    <p id="er" calss="hide" style="color:red;font-size:1.5em;">*You must select Category and Difficulty</p>
+    <label for="category" style="font-size:1.3em;">Select category:</label>
+    <select id="category" onchange="sortByCategory()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
+      <option value="" ></option>
+      <option value="html" id="val" class="dropdown-item">HTML</option>
+      <option value="css" id="val" class="dropdown-item">CSS</option>
+      <option value="js" id="val" class="dropdown-item">JavaScript</option>
+    </select><br><br>
+    <label for="Difficulty" style="font-size:1.3em;">Select Difficulty:</label>
+    <select id="difficulty" onchange="sortByDifficulty()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
+      <option value="" ></option>
+      <option value="easy" class="dropdown-item">Easy</option>
+      <option value="difficult" class="dropdown-item">Difficult</option>
+    </select><br><br>
+    <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+  </div>
+  <div id="quizContent" class="row quiz hide">
     <div class="col-sm-12">
       <h2 id="quizHeader"></h2>
     </div>
@@ -46,5 +65,6 @@
 </div>
 </body>
 </html>
+
 <script type="text/javascript" src="data.js"></script>
 <script  type="text/javascript"  src="app.js"></script>
