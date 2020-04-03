@@ -18,7 +18,7 @@ var btnPrevious = document.getElementById("btnPrevious");
 var btnFinish = document.getElementById("finishQuiz");
 var stat=document.getElementById("statistics").childNodes;
 var con=document.getElementById("submit");
-con.addEventListener("click",FinalSort);
+con.addEventListener("click",getFilteredQuestions);
 //console.log(stat);
 //checkPage();
 btnNext.addEventListener("click", moveNext);
@@ -36,6 +36,22 @@ for (var i = 1; i < stat.length; i++) {
 }
 var cat;
 var dif;
+function dropdownCategoryInfo(){
+    output='<option value="" ></option>';
+    for(element in categories){
+        output+=`<option value=" ${categories[element]}" > ${categories[element]} </option>`;
+    }
+    document.getElementById("category").innerHTML=output;
+}
+dropdownCategoryInfo();
+function dropdownDifficultyInfo(){
+    output='<option value="" ></option>';
+    for(element in difficulties){
+        output+=`<option value=" ${difficulties[element]}" > ${difficulties[element]} </option>`;
+    }
+    document.getElementById("difficulty").innerHTML=output;
+}
+dropdownDifficultyInfo();
 function sortByCategory(){
     //console.log("im in")
     cat=document.getElementById("category").value;
@@ -47,25 +63,28 @@ function sortByDifficulty(){
     dif=document.getElementById("difficulty").value;
     console.log(dif)
 }
-function FinalSort(){
-    var kolko=0;
+function getFilteredQuestions(){
+    //var kolko=0;
     console.log(cat,dif)
-if(cat!=undefined && dif!=undefined){
-console.log("continue");
-for(var i=0;i<myQuizall.length;i++){
-    if(myQuizall[i].category==cat && myQuizall[i].difficulty==dif){
-        myQuiz[kolko]=myQuizall[i];kolko++;
-    }
-}
-//console.log(myQuiz)
-beginning.classList.add("hide");
-quizContent.classList.remove("hide");
+    if(cat!=undefined && dif!=undefined){
+        console.log("continue");
+        for(var i=0;i<myQuizАll.length;i++){
+            console.log(myQuizАll[i].category,cat , myQuizАll[i].difficulty,dif)
+            console.log(myQuizАll[i].category===cat , myQuizАll[i].difficulty===dif)
+            if(myQuizАll[i].category==cat && myQuizАll[i].difficulty==dif){
+                myQuiz.push(myQuizАll[i]);
+                console.log(myQuiz,myQuizАll[i])
+            }
+        }
+        //console.log(myQuiz)
+        beginning.classList.add("hide");
+        quizContent.classList.remove("hide");
 
-checkPage();
-}else{
+        checkPage();
+    }else{
     console.log("nope")
     er.classList.remove("hide");
-}
+    }
 }
 function myAnswer() {
     var idAnswer = this.getAttribute("data-id");
@@ -212,7 +231,7 @@ function checkPage(i) {
         btnNext.classList.add("hide");
         btnFinish.classList.remove("hide");
     }
-    console.log(myQuiz[curPage])
+    console.log(myQuiz)
     myHeader.innerHTML = myQuiz[curPage].question;///add question
     for (var i = 0; i < myQuestion.children.length; i++) {
         var curNode = myQuestion.children[i];
