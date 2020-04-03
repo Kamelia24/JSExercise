@@ -1,23 +1,23 @@
-var myQuizall = [
+var myQuizАll = [
     question1={
         question:"What is addEventListener() used for?",
         answers:["attach a click event","nothing","never use it","listens to HTML"],
         correct:"attach a click event",
-        category:"js",
+        category:"javascript",
         difficulty:"easy"
     },
     question1={
         question:"What does DOM stand for?",
         answers:["Document Over Mountains","Document Object Model","Do Over Models","Nothing"],
         correct:"Document Object Model",
-        category:"js",
+        category:"javascript",
         difficulty:"difficult"
     },
     question1={
         question:"What does BOM stand for?",
         answers:["document Object Model","nothing","Big Object Model","Browser Object Model"],
         correct:"Browser Object Model",
-        category:'js',
+        category:'javascript',
         difficulty:"easy"
     },
     question1={
@@ -63,3 +63,5 @@ var myQuizall = [
         difficulty:"difficult"
     }
 ]
+var categories=["html","css","javascript"]
+var difficulties=["easy","difficult"]
