@@ -11,26 +11,21 @@ var progressBar = document.getElementById("progressBar");
 var btnNext = document.getElementById("btnNext");
 var btnPrevious = document.getElementById("btnPrevious");
 var btnFinish = document.getElementById("finishQuiz");
-var stat=document.getElementById("statistics").childNodes;
+
 var con=document.getElementById("submit");
 var cat;
 var dif;
-
 con.addEventListener("click",getFilteredQuestions);
 btnNext.addEventListener("click", moveNext);
 btnPrevious.addEventListener("click", moveBack);
 btnFinish.addEventListener("click", check);
 btnYes.addEventListener("click",endQuiz);
 btnNo.addEventListener("click",reload);
-
+console.log(classname.length)
 for (var i = 0; i < classname.length; i++) {
     classname[i].addEventListener('click', myAnswer, false);
 }
 
-for (var i = 1; i < stat.length; i++) {
-    console.log(stat[i],"p");
-    stat[i].addEventListener('click',checked,false);
-}
 
 function dropdownCategoryInfo(){
     var output=`<option value="" ></option>`;
@@ -81,4 +76,11 @@ function inputStats(){
         output1+=`<p id="${i+1}" class="btn"></p><br>`;
     }
     document.getElementById("statistics").innerHTML=output1;
+    addStatListener();
+}
+function addStatListener(){
+var stat=document.getElementById("statistics").childNodes;
+for (var i = 0; i < stat.length; i++) {
+    stat[i].addEventListener('click',checked,false);
+}
 }
