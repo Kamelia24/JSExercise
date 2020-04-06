@@ -11,11 +11,25 @@ var myQuizАll = [
         answers:["Document Over Mountains","Document Object Model","Do Over Models","Nothing"],
         correct:"Document Object Model",
         category:"javascript",
-        difficulty:"difficult"
+        difficulty:"easy"
     },
     question1={
-        question:"What does BOM stand for?",
-        answers:["document Object Model","nothing","Big Object Model","Browser Object Model"],
+        question:"What ?",
+        answers:["document  Model","nothing","Big  Model","Browser Model"],
+        correct:"Browser Object Model",
+        category:'javascript',
+        difficulty:"easy"
+    },
+    question1={
+        question:"What does ?",
+        answers:[" Model","nothing","Big ","Browser Object Model"],
+        correct:"Browser Object Model",
+        category:'javascript',
+        difficulty:"easy"
+    },
+    question1={
+        question:"What does  for?",
+        answers:["document Object","nothing","Object Model","Browser Object Model"],
         correct:"Browser Object Model",
         category:'javascript',
         difficulty:"easy"
