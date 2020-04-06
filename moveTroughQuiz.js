@@ -1,3 +1,4 @@
+
 function check(){
     var isAnswered=false;
     for(let i=0;i<myQuiz.length;i++){
