@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>JavaScript Quiz Project</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="mainCSS.css">
+
+</head>
+<body>
+<div class="container">
+  <h1 align="center">Welcome to my Quiz</h1>
+  <br>
+  <div id="beginning" >
+    <p id="er" calss="hide" style="color:red;font-size:1.5em;">*You must select Category and Difficulty</p>
+    <label for="category" style="font-size:1.3em;">Select category:</label>
+    <select id="category" onchange="sortByCategory()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
+      
+    </select><br><br>
+    <label for="Difficulty" style="font-size:1.3em;">Select Difficulty:</label>
+    <select id="difficulty" onchange="sortByDifficulty()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
+     
+    </select><br><br>
+    <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+  </div>
+  <div id="quizContent" class="row quiz hide">
+    <div class="col-sm-12">
+      <h2 id="quizHeader"></h2>
+    </div>
+    <div id="questions" class="row">
+      <div class="col-sm-6"> <a data-id="1" class="btn btn-default answer ">1</a> </div>
+      <div class="col-sm-6"> <a data-id="2" class="btn btn-default answer ">2</a> </div>
+      <div class="col-sm-6"> <a data-id="3" class="btn btn-default answer ">3</a> </div>
+      <div class="col-sm-6"> <a data-id="4" class="btn btn-default answer ">4</a> </div>
+    </div>
+
+  <div class="row pageMovement">
+    <div id="btnPrevious" class="col-xs-5 col-sm-4 btn btn-primary pull-left">Previous</div>
+    <div id="btnNext" class="col-xs-5 col-sm-4 col-sm-offset-4 col-xs-offset-2 btn btn-primary pull-right">Next</div>
+  </div>
+  <div class="row ">
+    <div id="finishQuiz" class=" btn btn-success btn-block  hide ">Submit Quiz</div>
+  </div>
+  <div class="row progress">
+    <div id="progressBar" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
+  aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:50%"> 0% Complete </div>
+  </div> 
+    <div id="statistics">
+    </div>
+
+</div>
+  <div class="row pageMovement sure">
+      <p id="finishing" class="hide" style="text-align:center;font-size:2.5em">You have unanswered questions.<br>Are you sure you want to finish?</p>
+ <div id="btnYes" class="col-xs-5 col-sm-4 btn btn-primary pull-left hide">yes</div>
+ <div id="btnNo" class="col-xs-5 col-sm-4 col-sm-offset-4 col-xs-offset-2 btn btn-primary pull-right hide">no</div>
+</div>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="data.js"></script>
+<script type="text/javascript" src="server.js"></script>
+<script type="text/javascript"  src="app.js"></script>
+<script type="text/javascript" src="moveTroughQuiz.js"></script>
+<script type="text/javascript" src="addInfo.js"></script>
