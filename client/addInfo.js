@@ -26,13 +26,25 @@ for (var i = 0; i < classname.length; i++) {
     classname[i].addEventListener('click', myAnswer, false);
 }
 
-
+$(document).ready(function(){
 function dropdownCategoryInfo(){
     var output=`<option value="" ></option>`;
-    for(element in categories){
+    /*for(element in categories){
         output+=`<option value="${categories[element]}" > ${categories[element]} </option>`;
-    }
-    document.getElementById("category").innerHTML=output;
+    }*/
+    $.ajax({
+        url:"http://localhost:3000/category",
+        type: 'GET',
+        success:function(msg){
+            console.log(msg);
+            for(element in msg){
+                output+=`<option value="${msg[element]}" > ${msg[element]} </option>`;
+            }
+            document.getElementById("category").innerHTML=output;
+        }
+
+    });
+    
 }
 dropdownCategoryInfo();
 
@@ -41,21 +53,23 @@ function dropdownDifficultyInfo(){
     /*for(element in difficulties){
         output+=`<option value="${difficulties[element]}" > ${difficulties[element]} </option>`;
     }*/
-    $ajax({
+    $.ajax({
         url:"http://localhost:3000/difficulty",
         type: 'GET',
         success:function(msg){
             console.log(msg);
             for(element in msg){
-                output+=`<option value="${difficulties[element]}" > ${difficulties[element]} </option>`;
+                output+=`<option value="${msg[element]}" > ${msg[element]} </option>`;
+                console.log(output)
             }
+             document.getElementById("difficulty").innerHTML=output;
         }
 
     });
-    document.getElementById("difficulty").innerHTML=output;
+   
 }
 dropdownDifficultyInfo();
-
+});
 function sortByCategory(){
     cat=document.getElementById("category").value;
 }
@@ -66,15 +80,30 @@ function sortByDifficulty(){
 
 function getFilteredQuestions(){
     if(cat!=undefined && dif!=undefined && cat!="" && dif!=""){
-        for(var i=0;i<myQuizАll.length;i++){
+        /*for(var i=0;i<myQuizАll.length;i++){
             if(myQuizАll[i].category==cat && myQuizАll[i].difficulty==dif){
                 myQuiz.push(myQuizАll[i]);
             }
+        }*/
+        $.ajax({
+        url:"http://localhost:3000/sort",
+        type: 'POST',
+        data: {"cat":cat,"dif":dif},
+        success:function(msg){
+            console.log(msg);
+            myQuiz=msg;
+            beginning.classList.add("hide");
+            quizContent.classList.remove("hide");
+            inputStats();
+            checkPage();
         }
+        });
+        /*
+        console.log(myQuiz)
         beginning.classList.add("hide");
         quizContent.classList.remove("hide");
         inputStats();
-        checkPage();
+        //checkPage();*/
     }else{
         er.classList.remove("hide");
     }
