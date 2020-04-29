@@ -79,3 +79,9 @@ var myQuizАll = [
 ]
 var categories=["html","css","javascript"]
 var difficulties=["easy","difficult"]
+const getQuestions=()=>{return myQuizАll;};
+exports.getQuestions=getQuestions;
+const getDifficulties=()=>{return difficulties;};
+exports.getDifficulties=getDifficulties;
+const getCategories=()=>{return categories;};
+exports.getCategories=getCategories;
