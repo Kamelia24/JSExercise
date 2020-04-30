@@ -4,8 +4,8 @@
 .pageMovement {
 	margin-top: 25px;
 }
-.answer {
-	margin-left: auto;
+.answer,.answers,.question {
+	/*margin-left: auto;*/
 	margin-right: auto;
 	display: block;
 	width: 80%;
@@ -52,4 +52,7 @@
 	white-space:nowrap;
 	background-color:transparent;
 	border:0;
+}
+.question1{
+	border: #212529 2px solid;
 }
