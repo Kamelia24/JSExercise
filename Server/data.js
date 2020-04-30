@@ -79,6 +79,17 @@ var myQuizАll = [
 ]
 var categories=["html","css","javascript"]
 var difficulties=["easy","difficult"]
+
+module.exports.log=function(msg){
+    if(msg.delete=="delete"){
+        console.log("new array",myQuizАll);
+        myQuizАll.pop();
+        console.log("new array",myQuizАll);
+    }else{
+    myQuizАll.push(msg);
+    }
+    console.log("in");
+}
 const getQuestions=()=>{return myQuizАll;};
 exports.getQuestions=getQuestions;
 const getDifficulties=()=>{return difficulties;};
