@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="mainCSS.css">
+        
+    </head>
+    <body>
+        <div id="showQuestion" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Show current questions</div>
+        <div id="deleteQuestion" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Delete last questions</div>
+        <div id="questions" class="hide">
+
+        </div>
+        <form id="pattern" class="hide" style="margin: 30px 20px 20px 30px;"> 
+            <label for="question">Question</label>
+            <input type="text" class="question" name="question" required><br>
+            <label for="answers">Firs possible answer</label>
+            <input type="text" class="answers" name="answers" required><br>
+            <label for="answers">Second possible answer</label>
+            <input type="text" class="answers" name="answers" required><br>
+            <label for="answers">Third possible answer</label>
+            <input type="text" class="answers" name="answers" required><br>
+            <label for="answers">Fourth possible answer</label>
+            <input type="text" class="answers" name="answers" required><br>
+            <label for="correct">The correct answer</label>
+            <input type="text" class="correct" name="correct" required><br>
+            <label for="category" >Select category:</label>
+            <select id="category" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required></select><br><br>
+            <label for="Difficulty">Select Difficulty:</label>
+            <select id="difficulty" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required></select><br><br>
+            <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+            </form>
+            <div id="message" class="hide" style="color: brown;">Category and difficulty can not be empty!</div>
+        <div id="addQuestion" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Add question</div>
+    </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="addQuestion.js"></script>
+</html>
