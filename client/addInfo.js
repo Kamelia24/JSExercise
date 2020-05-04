@@ -94,6 +94,7 @@ function getFilteredQuestions(){
             myQuiz=msg;
             beginning.classList.add("hide");
             quizContent.classList.remove("hide");
+            document.getElementById("checkScore").classList.add("hide");
             inputStats();
             checkPage();
         }
@@ -124,3 +125,5 @@ for (var i = 0; i < stat.length; i++) {
     stat[i].addEventListener('click',checked,false);
 }
 }
+
+
