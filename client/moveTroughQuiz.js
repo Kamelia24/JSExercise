@@ -52,6 +52,41 @@ function endQuiz() {
     }
     output = output + '<p>You scored ' + corrected + ' out of ' + myQuiz.length + '</p></div> ';
     document.getElementById("quizContent").innerHTML = output;
+    
+    var date=new Date();
+    var day=date.getDate();
+    var month=date.getMonth();
+    var year=date.getFullYear();
+    var hour=date.getHours();
+    var minutes=date.getMinutes();
+    let info={
+        user:document.getElementById("username").value,
+        score:`${corrected}/${myQuiz.length}`,
+        date:`${day}.${month}.${year} ${hour}:${minutes}`
+    }
+    $.ajax({
+        url: "http://localhost:3000/addUser",
+        type:   'POST',
+        data: info ,
+        success: function(msg){
+            console.log(msg);
+            for(var key in msg){
+                if(key=="empty"){
+                    let output='<div>You are new here,better start the quiz. :) </div>';
+                    document.getElementById("showResult").innerHTML=output;
+                    document.getElementById("showResult").classList.remove("hide");
+                }else{
+                    let output=`<div>${msg}</div>`;
+                    document.getElementById("showResult").innerHTML=output;
+                    document.getElementById("showResult").classList.remove("hide");
+                }
+            }
+        },
+        error: function() {
+            $("#failed").css("visibility","visible")
+            //document.getElementById("SubmitButton").disabled = false;
+        }
+    });
 }
 
 function checked(){
