@@ -6,6 +6,9 @@ const categories=Data.getCategories();
 const difficulties=Data.getDifficulties();
 const { check, validationResult, matchedData } = require('express-validator');
 const app = express();
+const fs=require('fs');
+var rawdata=fs.readFileSync('userInfo.json');
+let users=JSON.parse(rawdata);
 //console.log(categories);console.log(difficulties);console.log(quizAll);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -35,6 +38,16 @@ app.all('/newQuestion', function(req, res, next) {
     next()
 });
 app.all('/deleteQuestion', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+});
+app.all('/showPrevious', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+});
+app.all('/addUser', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
@@ -71,6 +84,41 @@ app.post('/newQuestion', (req, res) => {
 app.post('/deleteQuestion', (req, res) => {
     //console.log(req.body);
     Data.log(req.body);
+});
+app.post("/showPrevious",(req,res) => {
+    var rawdata=fs.readFileSync('userInfo.json');
+    let users=JSON.parse(rawdata);
+    console.log(req.body.name);
+    for(key in users){
+        if(key==req.body.name){
+            res.send(users.key);
+            console.log(key);
+            break;
+        }else{
+            console.log("empty");
+            res.send({'empty':'empty'});
+        }
+    }
+});
+app.post("/addUser",(req,res) => {
+    console.log(req.body);
+    //var rawdata=fs.readFileSync('userInfo.json');
+    //let users=JSON.parse(rawdata);
+    var hasUser=false;
+    for(key in users){if(key==req.body.user){hasUser=true;}}
+    let scored={};
+    score=req.body.score;
+    date=req.body.date;
+    scored[`score`]=[score];
+    scored[`date`]=[date];
+    console.log(scored);
+    if(users=={} || !hasUser){
+    users[`${req.body.user}`]=[];
+    }
+    users[`${req.body.user}`].push(scored);
+    console.log(users[`${req.body.user}`][0]);
+    let data = JSON.stringify(users);
+    fs.writeFileSync('userInfo.json', data);
 });
 var port=3000;
 app.listen(port,()=>{console.log(`Node JS API is listening on port: ${port}`);});
