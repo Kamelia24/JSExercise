@@ -12,6 +12,8 @@
   <h1 align="center">Welcome to my Quiz</h1>
   <br>
   <div id="beginning" >
+    <label for="user" style="font-size:1.3em;">What's your name:</label>
+    <input type="text" id="username" name="user" required=""><br><br>
     <p id="er" calss="hide" style="color:red;font-size:1.5em;">*You must select Category and Difficulty</p>
     <label for="category" style="font-size:1.3em;">Select category:</label>
     <select id="category" onchange="sortByCategory()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
@@ -22,7 +24,13 @@
      
     </select><br><br>
     <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
-  </div>
+  </div><br>
+  <div id="checkScore" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Show previous results</div>
+  <form id="users" class="hide">
+    <input type="text" id="username" name="user" required="">
+    <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+  </form>
+  <div id="showResult" class="hide"></div>
   <div id="quizContent" class="row quiz hide">
     <div class="col-sm-12">
       <h2 id="quizHeader"></h2>
@@ -58,6 +66,7 @@
 </body>
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="checkUser.js"></script>
 <script type="text/javascript"  src="app.js"></script>
 <script type="text/javascript" src="moveTroughQuiz.js"></script>
 <script type="text/javascript" src="addInfo.js"></script>
