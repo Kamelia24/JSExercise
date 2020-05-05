@@ -91,8 +91,9 @@ app.post("/showPrevious",(req,res) => {
     console.log(req.body.name);
     for(key in users){
         if(key==req.body.name){
-            res.send(users.key);
-            console.log(key);
+            console.log("users.key",users[key]);
+            res.send(users[key]);
+            
             break;
         }else{
             console.log("empty");
@@ -109,14 +110,16 @@ app.post("/addUser",(req,res) => {
     let scored={};
     score=req.body.score;
     date=req.body.date;
-    scored[`score`]=[score];
-    scored[`date`]=[date];
-    console.log(scored);
+    scored[`score`]=score;
+    scored[`date`]=date;
+    scored['category']=req.body.category;
+    scored['difficulty']=req.body.difficulty;
+    //console.log(scored);
     if(users=={} || !hasUser){
     users[`${req.body.user}`]=[];
     }
     users[`${req.body.user}`].push(scored);
-    console.log(users[`${req.body.user}`][0]);
+    //console.log(users[`${req.body.user}`][0]);
     let data = JSON.stringify(users);
     fs.writeFileSync('userInfo.json', data);
 });
