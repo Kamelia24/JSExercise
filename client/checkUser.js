@@ -19,7 +19,9 @@ $('#users').on('submit',function(event){
                     document.getElementById("showResult").innerHTML=output;
                     document.getElementById("showResult").classList.remove("hide");
                 }else{
-                    let output=`<div>${msg}</div>`;
+                    for(let i=0;i<msg.length;i++){
+                    var output=`<div>You scored:${msg[i].score} on ${msg[i].date} at the ${msg[i].difficulty} ${msg[i].category} quiz</div><br>`;
+                    }
                     document.getElementById("showResult").innerHTML=output;
                     document.getElementById("showResult").classList.remove("hide");
                 }
