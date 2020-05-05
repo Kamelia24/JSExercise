@@ -33,6 +33,7 @@ function reload(){
     checkPage(curPage);
 }
 function endQuiz() {
+    console.log();
     btnYes.classList.add("hide");
     btnNo.classList.add("hide");
     finishing.classList.add("hide");
@@ -62,8 +63,11 @@ function endQuiz() {
     let info={
         user:document.getElementById("username").value,
         score:`${corrected}/${myQuiz.length}`,
-        date:`${day}.${month}.${year} ${hour}:${minutes}`
+        date:`${day}.${month}.${year} ${hour}:${minutes}`,
+        category:`${document.getElementById("category").value}`,
+        difficulty:`${document.getElementById("difficulty").value}`
     }
+    console.log(info);
     $.ajax({
         url: "http://localhost:3000/addUser",
         type:   'POST',
