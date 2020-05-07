@@ -86,20 +86,23 @@ app.post('/deleteQuestion', (req, res) => {
     Data.log(req.body);
 });
 app.post("/showPrevious",(req,res) => {
-    var rawdata=fs.readFileSync('userInfo.json');
-    let users=JSON.parse(rawdata);
-    console.log(req.body.name);
+    //var rawdata=fs.readFileSync('userInfo.json');
+    //let users=JSON.parse(rawdata);
+    //console.log(req.body.name);
     for(key in users){
+        console.log(key,req.body.name)
         if(key==req.body.name){
             console.log("users.key",users[key]);
-            res.send(users[key]);
+            output=users[key];
             
             break;
         }else{
             console.log("empty");
-            res.send({'empty':'empty'});
+            output={'empty':'empty'};
         }
     }
+    console.log(output);
+    res.send(output);
 });
 app.post("/addUser",(req,res) => {
     console.log(req.body);
