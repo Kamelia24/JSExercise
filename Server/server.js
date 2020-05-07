@@ -52,6 +52,16 @@ app.all('/addUser', function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
 });
+app.all('/addUserData', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+});
+app.all('/checkUserData', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+});
 app.get("/category",(req, res) => {
         return res.send(categories);
     
@@ -118,13 +128,47 @@ app.post("/addUser",(req,res) => {
     scored['category']=req.body.category;
     scored['difficulty']=req.body.difficulty;
     //console.log(scored);
-    if(users=={} || !hasUser){
-    users[`${req.body.user}`]=[];
+    if(hasUser){
+     users[`${req.body.user}`].push(scored);
     }
-    users[`${req.body.user}`].push(scored);
     //console.log(users[`${req.body.user}`][0]);
     let data = JSON.stringify(users);
     fs.writeFileSync('userInfo.json', data);
+});
+app.post("/addUserData",(req,res) => {
+    console.log("income:",req.body);
+    //var rawdata=fs.readFileSync('userInfo.json');
+    //let users=JSON.parse(rawdata);
+    var hasUser=false;
+    for(key in users){if(key==req.body.user){hasUser=true;}}
+    let data={};
+    username=req.body.username;
+    password=req.body.password;
+    data[`username`]=username[0];
+    data[`password`]=password[0];
+    data['age']=req.body.age;
+    console.log("data:",data);
+    if(!hasUser){
+    users[`${req.body.name}`]=[data];
+    }
+    //console.log(users[`${req.body.user}`][0]);
+    let data1 = JSON.stringify(users);
+    fs.writeFileSync('userInfo.json', data1);
+});
+app.post("/checkUserData",(req,res) => {
+    console.log("income:",req.body);
+    //var rawdata=fs.readFileSync('userInfo.json');
+    //let users=JSON.parse(rawdata);
+    var hasUser=false;
+    for(key in users){
+        console.log(users[key][0].username,req.body.username[1])
+        if(users[key][0].username==req.body.username[1]){
+        if(req.body.password[1]==users[key][0].password){
+            console.log("correct");
+            res.send({"correct":"correct"});
+        }
+    }
+}
 });
 var port=3000;
 app.listen(port,()=>{console.log(`Node JS API is listening on port: ${port}`);});
