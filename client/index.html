@@ -11,9 +11,33 @@
 <div class="container">
   <h1 align="center">Welcome to my Quiz</h1>
   <br>
-  <div id="beginning" >
-    <label for="user" style="font-size:1.3em;">What's your name:</label>
-    <input type="text" id="username" name="user" required=""><br><br>
+  <div id="buttons">
+  <div id="sign_up_button" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Sign up</div>
+  <div id="sign_in_button" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Sign in</div>
+  <div id="take_quiz" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Take quiz as a guest</div>
+  </div>
+  <div id="sign" class="hide">
+    <form id="sign_up" class="hide">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required="">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required="">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required="">
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required="">
+        <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+    </form>
+    <div id="error_message" class="hide">Invalid username or password!</div>
+    <form id="sign_in" class="hide">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required="">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required="">
+        <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+    </form>
+    </div>
+  <div id="beginning" class="hide">
     <p id="er" calss="hide" style="color:red;font-size:1.5em;">*You must select Category and Difficulty</p>
     <label for="category" style="font-size:1.3em;">Select category:</label>
     <select id="category" onchange="sortByCategory()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
@@ -66,6 +90,7 @@
 </body>
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="sign_up.js"></script>
 <script type="text/javascript" src="checkUser.js"></script>
 <script type="text/javascript"  src="app.js"></script>
 <script type="text/javascript" src="moveTroughQuiz.js"></script>
