@@ -13,14 +13,15 @@ $('#users').on('submit',function(event){
         data: {'name': user} ,
         success: function(msg){
             console.log(msg);
+            let output="";
             for(var key in msg){
                 if(key=="empty"){
-                    let output='<div>You are new here,better start the quiz. :) </div>';
+                     output='<div>You are new here,better start the quiz. :) </div>';
                     document.getElementById("showResult").innerHTML=output;
                     document.getElementById("showResult").classList.remove("hide");
                 }else{
                     for(let i=0;i<msg.length;i++){
-                    var output=`<div>You scored:${msg[i].score} on ${msg[i].date} at the ${msg[i].difficulty} ${msg[i].category} quiz</div><br>`;
+                     output+=`<div>You scored:${msg[i].score} on ${msg[i].date} at the ${msg[i].difficulty} ${msg[i].category} quiz</div><br>`;
                     }
                     document.getElementById("showResult").innerHTML=output;
                     document.getElementById("showResult").classList.remove("hide");
