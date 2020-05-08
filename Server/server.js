@@ -100,8 +100,8 @@ app.post("/showPrevious",(req,res) => {
     //let users=JSON.parse(rawdata);
     //console.log(req.body.name);
     for(key in users){
-        console.log(key,req.body.name)
-        if(key==req.body.name){
+        console.log(users[key][0].username,req.body.name)
+        if(users[key][0].username==req.body.name){
             console.log("users.key",users[key]);
             output=users[key];
             
@@ -119,7 +119,7 @@ app.post("/addUser",(req,res) => {
     //var rawdata=fs.readFileSync('userInfo.json');
     //let users=JSON.parse(rawdata);
     var hasUser=false;
-    for(key in users){if(key==req.body.user){hasUser=true;}}
+    for(key in users){if(users[key][0].username==req.body.user){name=key;hasUser=true;}}
     let scored={};
     score=req.body.score;
     date=req.body.date;
@@ -129,7 +129,7 @@ app.post("/addUser",(req,res) => {
     scored['difficulty']=req.body.difficulty;
     //console.log(scored);
     if(hasUser){
-     users[`${req.body.user}`].push(scored);
+     users[`${name}`].push(scored);
     }
     //console.log(users[`${req.body.user}`][0]);
     let data = JSON.stringify(users);
@@ -154,21 +154,24 @@ app.post("/addUserData",(req,res) => {
     //console.log(users[`${req.body.user}`][0]);
     let data1 = JSON.stringify(users);
     fs.writeFileSync('userInfo.json', data1);
+    res.send({"success":"success"});
 });
 app.post("/checkUserData",(req,res) => {
     console.log("income:",req.body);
     //var rawdata=fs.readFileSync('userInfo.json');
     //let users=JSON.parse(rawdata);
+    let outp={};
     var hasUser=false;
     for(key in users){
-        console.log(users[key][0].username,req.body.username[1])
-        if(users[key][0].username==req.body.username[1]){
-        if(req.body.password[1]==users[key][0].password){
+        if(users[key][0].username==req.body.username[1] &&
+            req.body.password[1]==users[key][0].password){
+            console.log(users[key][0].username,req.body.username[1])
+            console.log(users[key][0].password,req.body.password[1])
             console.log("correct");
-            res.send({"correct":"correct"});
-        }
-    }
-}
+            outp={"correct":"correct"};
+            break;
+    }else{outp={"error":"error"};}
+}res.send(outp);
 });
 var port=3000;
 app.listen(port,()=>{console.log(`Node JS API is listening on port: ${port}`);});
