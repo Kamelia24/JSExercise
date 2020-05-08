@@ -12,10 +12,11 @@ var btnNext = document.getElementById("btnNext");
 var btnPrevious = document.getElementById("btnPrevious");
 var btnFinish = document.getElementById("finishQuiz");
 
-var con=document.getElementById("submit");
+var con=document.getElementById("takeQuiz");
+console.log(con);
+con.addEventListener("click",getFilteredQuestions);
 var cat;
 var dif;
-con.addEventListener("click",getFilteredQuestions);
 btnNext.addEventListener("click", moveNext);
 btnPrevious.addEventListener("click", moveBack);
 btnFinish.addEventListener("click", check);
@@ -78,7 +79,7 @@ function sortByDifficulty(){
     dif=document.getElementById("difficulty").value;
 }
 
-function getFilteredQuestions(){
+function getFilteredQuestions(){console.log("in");
     if(cat!=undefined && dif!=undefined && cat!="" && dif!=""){
         /*for(var i=0;i<myQuizАll.length;i++){
             if(myQuizАll[i].category==cat && myQuizАll[i].difficulty==dif){
