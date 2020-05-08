@@ -19,22 +19,22 @@
   <div id="sign" class="hide">
     <form id="sign_up" class="hide">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required="">
+        <input type="text" id="username1" name="username" required=""><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required="">
+        <input type="password" id="password" name="password" required=""><br>
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required="">
+        <input type="text" id="name" name="name" required=""><br>
         <label for="age">Age:</label>
-        <input type="text" id="age" name="age" required="">
-        <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+        <input type="text" id="age" name="age" required=""><br>
+        <input type="submit" id="sign_up" value="Submit" class="btn" style="font-size:1.3em;">
     </form>
     <div id="error_message" class="hide">Invalid username or password!</div>
     <form id="sign_in" class="hide">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required="">
+        <input type="text" id="username" name="username" required=""><br>
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required="">
-        <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+        <input type="password" id="password" name="password" required=""><br>
+        <input type="submit" id="sign_in" value="Submit" class="btn" style="font-size:1.3em;">
     </form>
     </div>
   <div id="beginning" class="hide">
@@ -47,13 +47,9 @@
     <select id="difficulty" onchange="sortByDifficulty()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
      
     </select><br><br>
-    <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
+    <input type="submit" id="takeQuiz" value="Submit" class="btn" style="font-size:1.3em;">
   </div><br>
-  <div id="checkScore" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Show previous results</div>
-  <form id="users" class="hide">
-    <input type="text" id="username" name="user" required="">
-    <input type="submit" id="submit" value="Submit" class="btn" style="font-size:1.3em;">
-  </form>
+  <div id="checkScore" class=" btn btn-block add hide" style="margin-top: 10px;border:1px gray dotted">Show previous results</div>
   <div id="showResult" class="hide"></div>
   <div id="quizContent" class="row quiz hide">
     <div class="col-sm-12">
