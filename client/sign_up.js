@@ -19,23 +19,25 @@ function takeTheQuiz(){
     document.getElementById("sign_in").classList.add("hide");
     document.getElementById("buttons").classList.add("hide");
     document.getElementById("beginning").classList.remove("hide");
+    
 }
 $('#sign_up').on('submit',function(event){
     event.preventDefault();
 var info=$( "form" ).serialize();
-document.getElementById("sign_up").classList.add("hide");
+//document.getElementById("sign_up").classList.add("hide");
 $.ajax({
     url: "http://localhost:3000/addUserData",
     type:   'POST',
     data: info ,
     success: function(msg){
-        
+        console.log(msg)
         document.getElementById("sign").classList.remove("hide");
         document.getElementById("sign_up").classList.add("hide");
         document.getElementById("sign_in").classList.remove("hide");
     },
     error: function() {
         $("#failed").css("visibility","visible")
+        console.log("out")
         //document.getElementById("SubmitButton").disabled = false;
     }
 });
@@ -49,10 +51,13 @@ $.ajax({
     data: info ,
     success: function(msg){
         console.log(msg);
-        if(msg.correct!="correct"){document.getElementById("error_message").classList.remove("hide");}
+        if(msg.correct!="correct"){
+            document.getElementById("error_message").classList.remove("hide");}
         else{
         document.getElementById("sign_in").classList.add("hide");
         document.getElementById("beginning").classList.remove("hide");
+        document.getElementById("error_message").classList.add("hide");
+        document.getElementById("checkScore").classList.remove("hide");
     }
     },
     error: function() {
