@@ -1,20 +1,27 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="mainCSS.css">
+<link rel="stylesheet" type="text/css" href="./public/mainCSS.css">
 <p id="er" calss="hide" style="color:red;font-size:1.5em;">*You must select Category and Difficulty</p>
+<form action="/sort" method="POST">
+    
     <label for="category" style="font-size:1.3em;">Select category:</label>
-    <select id="category" onchange="sortByCategory()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
-        <option value=""></option>
+    <select name="category" id="category"  class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
+        <optgroup >
+            <option value="olp"></option>
         <% category.forEach((item)=>{%> 
-            <option value=`<%=item%>` > <%=item%></option>  
-            <%});%>
+            <option value=<%=item%> > <%=item%></option>  
+            <%});%></optgroup>
     </select><br><br>
+    
     <label for="Difficulty" style="font-size:1.3em;">Select Difficulty:</label>
-    <select id="difficulty" onchange="sortByDifficulty()" class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
-        <option value=""></option>
+    <select name="difficulty" id="difficulty"  class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
+       <optgroup >
+            <option value=""></option>
         <% difficulty.forEach((item)=>{%> 
-            <option value=`<%=item%>` > <%=item%></option>  
+            <option value=<%=item%> > <%=item%></option>  
             <%});%>
+        </optgroup>
     </select><br><br>
     <input type="submit" id="takeQuiz" value="Submit" class="btn" style="font-size:1.3em;">
+</form>
   
