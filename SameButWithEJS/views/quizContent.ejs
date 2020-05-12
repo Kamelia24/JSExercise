@@ -1,11 +1,15 @@
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="./public/mainCSS.css">
+
 <div class="col-sm-12">
-    <h2 id="quizHeader"></h2>
+    <h2 id="quizHeader">Question <br><br> <%=sorted.question%> <br></h2>
+
   </div>
   <div id="questions" class="row">
-    <div class="col-sm-6"> <a data-id="1" class="btn btn-default answer ">1</a> </div>
-    <div class="col-sm-6"> <a data-id="2" class="btn btn-default answer ">2</a> </div>
-    <div class="col-sm-6"> <a data-id="3" class="btn btn-default answer ">3</a> </div>
-    <div class="col-sm-6"> <a data-id="4" class="btn btn-default answer ">4</a> </div>
+    <div class="col-sm-6"> <a data-id="1" class="btn btn-default answer "><%=sorted.answers[0]%></a> </div>
+    <div class="col-sm-6"> <a data-id="2" class="btn btn-default answer "><%=sorted.answers[1]%></a> </div>
+    <div class="col-sm-6"> <a data-id="3" class="btn btn-default answer "><%=sorted.answers[2]%></a> </div>
+    <div class="col-sm-6"> <a data-id="4" class="btn btn-default answer "><%=sorted.answers[3]%></a> </div>
   </div>
 
 <div class="row pageMovement">
