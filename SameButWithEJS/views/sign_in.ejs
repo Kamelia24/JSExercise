@@ -1,8 +1,8 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="mainCSS.css">
+<link rel="stylesheet" type="text/css" href="./public/mainCSS.css">
 <div id="error_message" class="hide">Invalid username or password!</div>
-<form id="sign_in" class="">
+<form id="sign_in" action="/checkUserData" method="post" class="">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username" required=""><br>
     <label for="password">Password:</label>
