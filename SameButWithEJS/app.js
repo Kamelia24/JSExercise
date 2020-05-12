@@ -11,7 +11,7 @@ const fs=require('fs');
 var rawdata=fs.readFileSync('data/userInfo.json');
 let users=JSON.parse(rawdata);
 //console.log(categories);console.log(difficulties);console.log(quizAll);
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.all('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -108,16 +108,20 @@ app.get("/quizQuestions",(req, res) => {
 
 });
 app.post("/sort",(req, res) => {
-    //console.log(req.body.cat);
+
+    console.log(req.body);
     var sorted=[];
-    const cat=req.body.cat;//console.log(cat);
-    const dif=req.body.dif;//console.log(dif);
+    const cat=req.body.category;//console.log(cat);
+    const dif=req.body.difficulty;//console.log(dif);
     for(var i=0;i<quizAll.length;i++){
-        if(quizAll[i].category==cat && quizAll[i].difficulty==dif){
+        //console.log(quizAll[i].category,cat,quizAll[i].difficulty,dif);
+        if(`${quizAll[i].category}`==cat && `${quizAll[i].difficulty}`==dif){
+            //console.log(quizAll[i]);
             sorted.push(quizAll[i]);
         }
     }
     console.log(sorted)
+    res.render('quizContent',{sorted:sorted[0]}); 
     res.send(sorted);
 });
 app.post('/newQuestion', (req, res) => {
@@ -177,8 +181,8 @@ app.post("/addUserData",(req,res) => {
     let data={};
     username=req.body.username;
     password=req.body.password;
-    data[`username`]=username[0];
-    data[`password`]=password[0];
+    data[`username`]=username;
+    data[`password`]=password;
     data['age']=req.body.age;
     console.log("data:",data);
     if(!hasUser){
@@ -187,7 +191,7 @@ app.post("/addUserData",(req,res) => {
     //console.log(users[`${req.body.user}`][0]);
     let data1 = JSON.stringify(users);
     fs.writeFileSync('userInfo.json', data1);
-    res.send({"success":"success"});
+    res.render('sign_in.ejs');
 });
 app.post("/checkUserData",(req,res) => {
     console.log("income:",req.body);
@@ -196,14 +200,15 @@ app.post("/checkUserData",(req,res) => {
     let outp={};
     var hasUser=false;
     for(key in users){
-        if(users[key][0].username==req.body.username[1] &&
-            req.body.password[1]==users[key][0].password){
-            console.log(users[key][0].username,req.body.username[1])
-            console.log(users[key][0].password,req.body.password[1])
+console.log(users[key][0].username,req.body.username)
+            console.log(users[key][0].password,req.body.password)
+        if(users[key][0].username==req.body.username &&
+            req.body.password==users[key][0].password){
+            
             console.log("correct");
-            outp={"correct":"correct"};
+            res.render('beginning.ejs',{category:categories,difficulty:difficulties});
             break;
-    }else{outp={"error":"error"};}
+    }else{outp="Incorect username or password,please try again!";}
 }res.send(outp);
 });
 var port=3000;
