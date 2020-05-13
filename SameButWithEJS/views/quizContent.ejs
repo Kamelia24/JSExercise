@@ -1,27 +1,102 @@
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="./public/mainCSS.css">
-
+<link rel="stylesheet" src="./public/mainCSS.css">
+<% var myQuiz=sorted;%> 
+<% var page=0;%> 
 <div class="col-sm-12">
-    <h2 id="quizHeader">Question <br><br> <%=sorted.question%> <br></h2>
+    <h2 id="quizHeader">Question <%=myQuiz[0].question[0]%> <br><br> <%=myQuiz[0].question[1]%> <br></h2>
 
   </div>
   <div id="questions" class="row">
-    <div class="col-sm-6"> <a data-id="1" class="btn btn-default answer "><%=sorted.answers[0]%></a> </div>
-    <div class="col-sm-6"> <a data-id="2" class="btn btn-default answer "><%=sorted.answers[1]%></a> </div>
-    <div class="col-sm-6"> <a data-id="3" class="btn btn-default answer "><%=sorted.answers[2]%></a> </div>
-    <div class="col-sm-6"> <a data-id="4" class="btn btn-default answer "><%=sorted.answers[3]%></a> </div>
+    <div class="col-sm-6"> <a data-id="1" class="btn btn-default answer "><%=myQuiz[0].answers[0]%></a> </div>
+    <div class="col-sm-6"> <a data-id="2" class="btn btn-default answer "><%=myQuiz[0].answers[1]%></a> </div>
+    <div class="col-sm-6"> <a data-id="3" class="btn btn-default answer "><%=myQuiz[0].answers[2]%></a> </div>
+    <div class="col-sm-6"> <a data-id="4" class="btn btn-default answer "><%=myQuiz[0].answers[3]%></a> </div>
   </div>
-
+<br>
 <div class="row pageMovement">
   <div id="btnPrevious" class="col-xs-5 col-sm-4 btn btn-primary pull-left">Previous</div>
   <div id="btnNext" class="col-xs-5 col-sm-4 col-sm-offset-4 col-xs-offset-2 btn btn-primary pull-right">Next</div>
 </div>
 <div class="row ">
   <div id="finishQuiz" class=" btn btn-success btn-block  hide ">Submit Quiz</div>
-</div>
+</div><br>
 <div class="row progress">
   <div id="progressBar" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar"
 aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:50%"> 0% Complete </div>
 </div> 
   <div id="statistics">
   </div>
+<script>
+  var curPage = 0;
+  var myHeader = document.getElementById("quizHeader");
+  var progressBar = document.getElementById("progressBar");
+  var myQuestion = document.getElementById("questions");
+  var btnNext = document.getElementById("btnNext");
+var btnPrevious = document.getElementById("btnPrevious");
+var btnFinish = document.getElementById("finishQuiz");
+btnNext.addEventListener("click", moveNext);
+btnPrevious.addEventListener("click", moveBack);
+//btnFinish.addEventListener("click", check);
+ function checkPage(i,myQuiz) {
+    if(i!=undefined){
+        curPage=i;
+    }
+    if (curPage == 0) {
+        btnPrevious.classList.add("hide");
+    } else {
+        btnPrevious.classList.remove("hide");
+    }
+    if ((curPage + 1) < (myQuiz.length)) {
+        btnNext.classList.remove("hide");
+    } else {
+        btnNext.classList.add("hide");
+        btnFinish.classList.remove("hide");
+    }
+    let quest=`Question ${curPage+1} <br><br> ${myQuiz[curPage].question} <br>`;
+    myHeader.innerHTML = quest;///add question
+    for (var i = 0; i < myQuestion.children.length; i++) {
+        var curNode = myQuestion.children[i];
+        curNode.childNodes[1].innerHTML = capitalise(myQuiz[curPage].answers[i]); ///add possible answers
+        //check if answered already
+        if (myAnswers[curPage] == (i + 1)) {
+            curNode.classList.add("selAnswer");
+        } else {
+            curNode.classList.remove("selAnswer");
+        }
+    }
+    
+    ///update progress bar
+    var increment = Math.ceil((curPage) / ( myQuiz.length) * 100);
+    progressBar.style.width = (increment) + '%';
+    progressBar.innerHTML = (increment) + '%';
+    outputed();
+}
+
+function moveNext() {
+  var myQuiz ={
+  question:'<%= myQuiz[curPage].question %>',
+  answers:'<%= myQuiz[curPage].answers %>',
+  correct:'<%= myQuiz[curPage].correct %>'
+
+};
+  console.log(myQuiz);
+    if (curPage < (myQuiz.length - 1)) {
+        curPage++;
+        checkPage(curPage,myQuiz);
+    } else {
+        if (myQuiz.length >= curPage) {
+            endQuiz();
+        } 
+    }
+}
+
+function moveBack() {
+    if (curPage > 0) {
+        curPage--;
+        checkPage(curPage);
+    }
+} 
+function capitalise(str) {
+    return str.substr(0, 1).toUpperCase() + str.substr(1);
+}
+</script>
