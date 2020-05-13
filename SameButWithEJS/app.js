@@ -108,7 +108,8 @@ app.get("/quizQuestions",(req, res) => {
 
 });
 app.post("/sort",(req, res) => {
-
+var quizLength=0;
+var curPage=0;
     console.log(req.body);
     var sorted=[];
     const cat=req.body.category;//console.log(cat);
@@ -118,11 +119,15 @@ app.post("/sort",(req, res) => {
         if(`${quizAll[i].category}`==cat && `${quizAll[i].difficulty}`==dif){
             //console.log(quizAll[i]);
             sorted.push(quizAll[i]);
+            quizLength++;
         }
     }
     console.log(sorted)
-    res.render('quizContent',{sorted:sorted[0]}); 
-    res.send(sorted);
+    res.render('quizContent',{sorted:sorted}); 
+});
+app.post('/nextQuestion', (req, res) => {
+    res.render('quizContent',{sorted:sorted[curPage]});
+    curPage++;
 });
 app.post('/newQuestion', (req, res) => {
     console.log(req.body);
