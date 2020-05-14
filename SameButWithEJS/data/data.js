@@ -2,77 +2,77 @@ var myQuizАll = [
     question1={
         question:[1,"What is addEventListener() used for?"],
         answers:["attach a click event","nothing","never use it","listens to HTML"],
-        correct:"attach a click event",
+        correct:1,
         category:"javascript",
         difficulty:"easy"
     },
     question1={
         question:[2,"What does DOM stand for?"],
         answers:["Document Over Mountains","Document Object Model","Do Over Models","Nothing"],
-        correct:"Document Object Model",
+        correct:2,
         category:"javascript",
         difficulty:"easy"
     },
     question1={
         question:[3,"What ?"],
         answers:["document  Model","nothing","Big  Model","Browser Model"],
-        correct:"Browser Object Model",
+        correct:4,
         category:'javascript',
         difficulty:"easy"
     },
     question1={
         question:[4,"What does ?"],
         answers:[" Model","nothing","Big ","Browser Object Model"],
-        correct:"Browser Object Model",
+        correct:4,
         category:'javascript',
         difficulty:"easy"
     },
     question1={
         question:[5,"What does  for?"],
         answers:["document Object","nothing","Object Model","Browser Object Model"],
-        correct:"Browser Object Model",
+        correct:4,
         category:'javascript',
         difficulty:"easy"
     },
     question1={
         question:[1,"What is HTML?"],
         answers:["Hyper Text Markup Language","nothing","hig tbject Model lyrics","Browser Object Model"],
-        correct:"Hyper Text Markup Language",
+        correct:1,
         category:'html',
         difficulty:'difficult'
     },
     question1={
         question:[1,"What does script stand for?"],
         answers:["tag","nothing","Big Object Model","Browser Object Model"],
-        correct:"tag",
+        correct:1,
         category:'html',
         difficulty:'easy'
     },
     question1={
         question:[2,"What does class stand for?"],
         answers:["class","nothing","Big Object Model","Browser Object Model"],
-        correct:"class",
+        correct:1,
         category:"html",
         difficulty:"easy"
     },
     question1={
         question:[1,"What does text stand for?"],
         answers:["text","nothing","Big Object Model","Browser Object Model"],
-        correct:"text",
+        correct:1,
         category:"css",
         difficulty:"easy"
     },
     question1={
         question:[2,"What does BOM stand for?"],
         answers:["document Object Model","nothing","Big Object Model","Browser Object Model"],
-        correct:"Browser Object Model",
+        correct:4,
         category:"css",
         difficulty:"easy"
     },
     question1={
         question:[1,"What does color stand for?"],
         answers:["color","nothing","Big Object Model","Browser Object Model"],
-        correct:"color",
+        correct:1,
         category:'css',
         difficulty:"difficult"
     }
