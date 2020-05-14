@@ -7,7 +7,6 @@
     <label for="category" style="font-size:1.3em;">Select category:</label>
     <select name="category" id="category"  class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
         <optgroup >
-            <option value="olp"></option>
         <% category.forEach((item)=>{%> 
             <option value=<%=item%> > <%=item%></option>  
             <%});%></optgroup>
@@ -16,7 +15,6 @@
     <label for="Difficulty" style="font-size:1.3em;">Select Difficulty:</label>
     <select name="difficulty" id="difficulty"  class="btn dropdown-toggle" style="border-style: inset;border-color:lightgray" required>
        <optgroup >
-            <option value=""></option>
         <% difficulty.forEach((item)=>{%> 
             <option value=<%=item%> > <%=item%></option>  
             <%});%>
