@@ -13,6 +13,7 @@ let users=JSON.parse(rawdata);
 //console.log(categories);console.log(difficulties);console.log(quizAll);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
 app.all('/', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -83,6 +84,11 @@ app.all('/quiz', function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
     next()
 });
+app.all('/surePage', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+});
 app.get('/', (req, res)=>{ 
     res.render('index'); 
     }); 
@@ -94,6 +100,9 @@ app.get('/login', (req, res)=>{
 }); 
 app.get('/quiz', (req, res)=>{ 
     res.render('beginning',{category:categories,difficulty:difficulties}); 
+}); 
+app.get('/surePage', (req, res)=>{ 
+    res.render('finishing'); 
 }); 
 app.get("/category",(req, res) => {
         return res.send(categories);
