@@ -8,14 +8,23 @@
 
 </head>
 <body>
+<div class="header">
+  
+    <div id="sign_up_button" onclick="location.href = '//localhost:3000/register';" class=" btn btn-primary add pull-right" >Sign up</div>
+    <div id="sign_in_button" onclick="location.href = '//localhost:3000/login';" class=" btn btn-primary add  pull-right">Sign in</div>
+   
+  <% if(session){ %>
+    <div id="profile" class="btn btn-primary pull-right " onclick="location.href = '//localhost:3000/profile'">Profile</div>
+    <div id="logOut" class="col-xs-5 col-sm-4 btn btn-primary pull-right " onclick="location.href = '//localhost:3000/logOut'">Log Out</div><br><br>
+     <% } %>
+    
+</div>
 <div class="container">
   <h1 align="center">Welcome to my Quiz</h1>
   <br>
   <div id="buttons">
-  <div id="sign_up_button" onclick="location.href = '//localhost:3000/register';" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Sign up</div>
-  <div id="sign_in_button" onclick="location.href = '//localhost:3000/login';" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Sign in</div>
-  <div id="take_quiz" onclick="location.href = '//localhost:3000/quiz';" class=" btn btn-block add" style="margin-top: 10px;border:1px gray dotted">Take quiz as a guest</div>
-  </div>
+      <div id="take_quiz" onclick="location.href = '//localhost:3000/quiz';" class=" btn btn-block add " style="margin-top: 10px;border:1px gray dotted">Take quiz as a guest</div>
+ </div>
   <div id="sign" class="">
     </div>
   <div id="beginning" class="">
