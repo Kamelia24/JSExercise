@@ -1,0 +1,35 @@
+<html>
+    <head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="/mainCSS.css">
+    </head>
+    <body>
+        <div class="header">
+            <% if(!session){ %>
+              <div id="sign_up_button" onclick="location.href = '//localhost:3000/register';" class=" btn btn-primary add pull-right" >Sign up</div>
+              <div id="sign_in_button" onclick="location.href = '//localhost:3000/login';" class=" btn btn-primary add  pull-right">Sign in</div>
+              <div>Please log in to view your profile.</div>
+            <% } %>
+            <% if(session){ %>
+                <div id="profile" class="btn btn-primary pull-right " onclick="location.href = '//localhost:3000/profile'">Profile</div>
+                <div id="logOut" class="btn btn-primary pull-right " onclick="location.href = '//localhost:3000/logOut'">Log Out</div><br><br>
+                <div>
+                    Profile data:<br>
+                    name= <%= prof[0]; %> <br>
+                    age= <%= prof[1].age; %> <br>
+                    username= <%= prof[1].username; %> <br>
+                    <% if(data!=undefined){ %>
+                        your Quiz rezults: <br>
+                        <% data.forEach((data)=>{ %>
+                            date: <%= data.date; %> <br>
+                            category: <%= data.category; %> <br>
+                            difficulty: <%= data.difficulty; %> <br>
+                            score: <%= data.score; %> <br>
+                        <% }); %>
+                    <% } %>
+                </div>
+              <% } %>
+              
+          </div>
+    </body>
+</html>
