@@ -8,16 +8,34 @@ let users=JSON.parse(rawdata);
 module.exports={
 
     home:function(req, res){ 
-        res.render('index'); 
+        res.render('index',{session:req.session.loggedin}); 
     },
     login:function(req, res){ 
+        if(req.body.session){
+        var data=[];
+        var prof=[];
+        for(key in users){
+            console.log(users[key][0].username,req.session.username)
+            if(users[key][0].username==req.session.username){
+                prof.push(key,users[key][0]);
+                for(let i=1;i<users[key].length;i++){
+                data.push(users[key][i]);
+                }
+                
+                break;
+            }
+        }
+        console.log("profile:",prof,"quiz",data);
+        res.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+        }else{
         res.render('sign_in'); 
+        }
     },
     register:function(req, res){ 
         res.render('sign_up'); 
     },
     getQuiz:function(req, res){ 
-        res.render('beginning',{category:categories,difficulty:difficulties,session:false}); 
+        res.render('beginning',{category:categories,difficulty:difficulties,session:req.session.loggedin}); 
     },
     sortQuiz:function(req, res){
         var quizLength=0;
@@ -35,7 +53,7 @@ module.exports={
                 }
             }
             console.log(sorted)
-            res.render('quizContent',{sorted:sorted}); 
+            res.render('quizContent',{sorted:sorted,session:req.session.loggedin}); 
     },
     addUserScore:function(req,res){
         console.log(req.body);
@@ -103,6 +121,23 @@ module.exports={
               }
             });
           }
+    },
+    profileInfo:function(req,res){
+        var data=[];
+        var prof=[];
+        for(key in users){
+            console.log(users[key][0].username,req.session.username)
+            if(users[key][0].username==req.session.username){
+                prof.push(key,users[key][0]);
+                for(let i=1;i<users[key].length;i++){
+                data.push(users[key][i]);
+                }
+                
+                break;
+            }
+        }
+        console.log("profile:",prof,"quiz",data);
+        res.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
     }
 
 }
