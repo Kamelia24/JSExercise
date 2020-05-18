@@ -1,3 +1,10 @@
+const Data=require('../data/data.js');
+const quizAll=Data.getQuestions();
+const categories=Data.getCategories();
+const difficulties=Data.getDifficulties();
+const fs=require('fs');
+var rawdata=fs.readFileSync('data/userInfo.json');
+let users=JSON.parse(rawdata);
 module.exports={
 
     home:function(req, res){ 
@@ -10,7 +17,7 @@ module.exports={
         res.render('sign_up'); 
     },
     getQuiz:function(req, res){ 
-        res.render('beginning',{category:categories,difficulty:difficulties}); 
+        res.render('beginning',{category:categories,difficulty:difficulties,session:false}); 
     },
     sortQuiz:function(req, res){
         var quizLength=0;
@@ -32,8 +39,6 @@ module.exports={
     },
     addUserScore:function(req,res){
         console.log(req.body);
-        //var rawdata=fs.readFileSync('userInfo.json');
-        //let users=JSON.parse(rawdata);
         var hasUser=false;
         for(key in users){if(users[key][0].username==req.body.user){name=key;hasUser=true;}}
         let scored={};
@@ -53,8 +58,6 @@ module.exports={
     },
     newUser:function(req,res){
         console.log("income:",req.body);
-        //var rawdata=fs.readFileSync('userInfo.json');
-        //let users=JSON.parse(rawdata);
         var hasUser=false;
         for(key in users){if(key==req.body.user){hasUser=true;}}
         let data={};
@@ -74,8 +77,6 @@ module.exports={
     },
     logInVerify:function(req,res){
         console.log("income:",req.body);
-        //var rawdata=fs.readFileSync('userInfo.json');
-        //let users=JSON.parse(rawdata);
         let outp={};
         var hasUser=false;
         for(key in users){
@@ -87,14 +88,13 @@ module.exports={
                 console.log("correct");
                 req.session.loggedin = true;
                 req.session.username = req.body.username;
-                res.render('beginning.ejs',{category:categories,difficulty:difficulties});
+                res.render('beginning.ejs',{category:categories,difficulty:difficulties,session:req.session.loggedin});
                 break;
         }else{outp="Incorect username or password,please try again!";}
     }res.send(outp);
     },
     logOut:function(req,res,next){
         if (req.session) {
-            // delete session object
             req.session.destroy(function(err) {
               if(err) {
                 return next(err);
