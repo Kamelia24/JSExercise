@@ -1,9 +1,19 @@
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 <link rel="stylesheet" src="./public/mainCSS.css">
-<% if(session){ %>
-   <br> <div id="logOut" class="col-xs-5 col-sm-4 btn btn-primary pull-left " onclick="location.href = '//localhost:3000/logOut'">Log Out</div><br><br>
-    <% } %>
+<div class="header">
+ 
+  <% if(!session){ %>
+    <div id="sign_up_button" onclick="location.href = '//localhost:3000/register';" class=" btn btn-primary add pull-right" >Sign up</div>
+    <div id="sign_in_button" onclick="location.href = '//localhost:3000/login';" class=" btn btn-primary add  pull-right">Sign in</div>
+   
+  <% } %>
+  <% if(session){ %>
+    <div id="profile" class="btn btn-primary pull-right " onclick="location.href = '//localhost:3000/profile'">Profile</div>
+    <div id="logOut" class="btn btn-primary pull-right " onclick="location.href = '//localhost:3000/logOut'">Log Out</div><br><br>
+     <% } %>
+    
+</div>
 <p id="er" calss="hide" style="color:red;font-size:1.5em;">*You must select Category and Difficulty</p>
 <form action="/sort" method="POST">
     
