@@ -40,56 +40,84 @@ left join quiz.difficulties dif on inf.difficulty_id=dif.id`, (err, res) => {
 module.exports={
 
     home:function(req, res){ 
-        client.query('SELECT * FROM quiz.users', (err, res) => {
-            if (err) {
-              console.log (err)
-            }
-            console.log(res.rows)
-        });
-        client.query(`SELECT * FROM quiz.quiz_results`, (err, res) => {
-            if (err) {
-              console.log (err)
-            }
-            console.log(res.rows);
-        })
-        client.query('SELECT category FROM quiz.categories', (err, res) => {
-            if (err) {
-              console.log (err)
-            }
-            console.log(res.rows);
-        })
-        client.query(`SELECT question,category,difficulty 
-FROM quiz.question_info inf
-left join quiz.categories cat on inf.category_id=cat.id
-left join quiz.difficulties dif on inf.difficulty_id=dif.id`, (err, res) => {
-    if (err) {
-      console.log (err)
-    }
-    console.log(res.rows);
-})
         res.render('index',{session:req.session.loggedin}); 
     },
     
-    getQuiz:function(req, res){ 
-        res.render('beginning',{category:categories,difficulty:difficulties,session:req.session.loggedin}); 
+    getQuiz:function(req, result){ 
+        let categories=[];
+        let difficulties=[];
+        client.query('SELECT category FROM quiz.categories', (err, res) => {
+            if (err) {
+                console.log (err)
+            }
+            for(let i=0;i<res.rows.length;i++){
+                categories.push(res.rows[i]["category"])
+            }
+            client.query('SELECT difficulty FROM quiz.difficulties', (err, res) => {
+                if (err) {
+                    console.log (err)
+                }
+                for(let i=0;i<res.rows.length;i++){
+                    difficulties.push(res.rows[i]["difficulty"])
+                }
+                console.log("dif:",res.rows)
+                result.render('beginning.ejs',{category:categories,difficulty:difficulties,session:req.session.loggedin});
+            })
+        }) 
     },
-    sortQuiz:function(req, res){
+    sortQuiz:function(req, result){
         var quizLength=0;
         var curPage=0;
             console.log(req.body);
             var sorted=[];
+           
             const cat=req.body.category;//console.log(cat);
             const dif=req.body.difficulty;//console.log(dif);
-            for(var i=0;i<quizAll.length;i++){
+            /*for(var i=0;i<quizAll.length;i++){
                 //console.log(quizAll[i].category,cat,quizAll[i].difficulty,dif);
                 if(`${quizAll[i].category}`==cat && `${quizAll[i].difficulty}`==dif){
                     //console.log(quizAll[i]);
                     sorted.push(quizAll[i]);
                     quizLength++;
                 }
-            }
-            console.log(sorted)
-            res.render('quizContent',{sorted:sorted,session:req.session.loggedin}); 
+            }*/
+            client.query(`SELECT distinct question,answers,correct_answer FROM quiz.question_info inf
+            left join quiz.categories cat on inf.category_id=cat.id
+            left join quiz.difficulties dif on inf.difficulty_id=dif.id
+            left join quiz.question_answers answ on answ.question_id=inf.id
+            where cat.category='${cat}' and dif.difficulty='${dif}'`, (err, res) => {
+                if (err) {
+                  console.log (err)
+                }
+                console.log(res.rows);let num=1;
+                for(let i=0;i<res.rows.length;i+=4){
+                    let f=0;
+                    let quizQuestion={};
+                   quizQuestion.question=[num,res.rows[i]["question"]];console.log(quizQuestion.question);
+                   quizQuestion.answers=[];
+                   do{
+                        quizQuestion.answers.push(res.rows[i+f]["answers"]);
+                        if(res.rows[i+f]["correct_answer"]==true){
+                        quizQuestion.correct=f+1;
+                        }
+                        //console.log(res.rows[i+f]);
+                        f++;
+                        //console.log(i,f);
+                   }while( res.rows[i+f]!=undefined && res.rows[i+f-1]["question"]==res.rows[i+f]["question"]);
+                   
+                   console.log(quizQuestion.answers);
+                   
+                   quizQuestion.category=cat;console.log(quizQuestion.category);
+                   
+                   quizQuestion.difficulty=dif;console.log(quizQuestion.difficulty);
+                   console.log(quizQuestion);
+                   sorted[num-1]=quizQuestion;num++;console.log(sorted)
+                }
+                   
+            result.render('quizContent',{sorted:sorted,session:req.session.loggedin}); 
+                
+                })
+            
     },
     addUserScore:function(req,res){
         console.log(req.body);
