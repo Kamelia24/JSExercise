@@ -1,8 +1,7 @@
 const fs=require('fs');
 var rawdata=fs.readFileSync('data/userInfo.json');
 let users;
-let categories;
-let difficulties;
+
 const { Client} = require('pg');
 client = new Client({
     host: 'localhost',
@@ -18,62 +17,82 @@ client.query('SELECT * FROM quiz.users', (err, res) => {
     }
     users=res.rows;
 })
-client.query('SELECT category FROM quiz.categories', (err, res) => {
-    if (err) {
-      console.log (err)
-    }
-    categories=res.rows;
-})
-client.query('SELECT difficulty FROM quiz.difficulties', (err, res) => {
-    if (err) {
-      console.log (err)
-    }
-    difficulties=res.rows;
-})
+
 module.exports={
-    login:function(req, res){ 
-        if(req.body.session){
+    login:function(req, result){ 
+        if(req.session.loggedin){
         var data=[];
         var prof=[];
-        for(let i=0;i<users.length;i++){
-            console.log(users[i].username,req.session.username)
-            if(users[i].username==req.session.username){
-                prof.push(users[i]);
-                client.query(`SELECT * FROM quiz.quiz_results where user_id=${i}`, (err, res) => {
+        console.log("username:",req.session.username)
+        client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
+            if (err) {
+              console.log (err)
+            }
+            users=res.rows;
+            if(users!=undefined){
+                console.log(users)
+                prof.push(users[0]["name"],users[0]["age"],users[0]["username"]);
+                client.query(`SELECT * FROM quiz.quiz_results where user_id=${users[0]["id"]}`, (err, res) => {
                     if (err) {
                       console.log (err)
                     }
                     data.push(res.rows);
                 })
-                break;
+                
             }
-        }
+        
         console.log("profile:",prof,"quiz",data);
-        res.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+        result.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+        })
         }else{
-        res.render('sign_in'); 
+        result.render('sign_in'); 
         }
     },
     register:function(req, res){ 
         res.render('sign_up'); 
     },
-    logInVerify:function(req,res){
+    logInVerify:function(req,result){
         console.log("income:",req.body);
         let outp={};
-        var hasUser=false;
-        for(let i=0;i<users.length;i++){
-    console.log(users[i].username,req.body.username)
-                console.log(users[i].password,req.body.password)
-            if(users[i].username==req.body.username &&
-                req.body.password==users[i].password){
+        let hasPass=false;
+        var userPassword;
+        client.query(`SELECT password FROM quiz.users WHERE username='${req.body.username}'`, (err, res) => {
+            if (err) {
+              console.log (err)
+            }
+            userPassword=res.rows[0];
+            hasPass=true;
+            console.log("result:",userPassword);
+            if(hasPass && userPassword!=undefined && req.body.password==userPassword.password){
+                let categories=[];
+                let difficulties=[];
+                client.query('SELECT category FROM quiz.categories', (err, res) => {
+                    if (err) {
+                      console.log (err)
+                    }
+                    for(let i=0;i<res.rows.length;i++){
+                        categories.push(res.rows[i]["category"])
+                    }
+                    client.query('SELECT difficulty FROM quiz.difficulties', (err, res) => {
+                        if (err) {
+                          console.log (err)
+                        }
+                        for(let i=0;i<res.rows.length;i++){
+                            difficulties.push(res.rows[i]["difficulty"])
+                        }
+                        console.log("dif:",res.rows)
+                        req.session.loggedin = true;
+                        req.session.username = req.body.username;
+                        result.render('beginning.ejs',{category:categories,difficulty:difficulties,session:req.session.loggedin});
+                    })
+                })
                 
                 console.log("correct");
-                req.session.loggedin = true;
-                req.session.username = req.body.username;
-                res.render('beginning.ejs',{category:categories,difficulty:difficulties,session:req.session.loggedin});
-                break;
-        }else{outp="Incorect username or password,please try again!";}
-    }//res.send(outp);
+                
+            }else{outp="Incorect username or password,please try again!";result.send(outp);}
+    
+        })
+            
     },
     logOut:function(req,res,next){
         if (req.session) {
@@ -86,51 +105,53 @@ module.exports={
             });
           }
     },
-    profileInfo:function(req,res){
+    profileInfo:function(req,result){
         var data=[];
         var prof=[];
-        for(let i=0;i<users.length;i++){
-            console.log(users[i].username,req.session.username)
-            if(users[i].username==req.session.username){
-                prof.push(users[i]);
-                client.query(`SELECT * FROM quiz.quiz_results where user_id=${i}`, (err, res) => {
+        console.log("username:",req.session.username)
+        client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
+            if (err) {
+              console.log (err)
+            }
+            users=res.rows;
+            if(users!=undefined){
+                console.log(users)
+                prof.push(users[0]["name"],users[0]["age"],users[0]["username"]);
+                client.query(`SELECT * FROM quiz.quiz_results where user_id=${users[0]["id"]}`, (err, res) => {
                     if (err) {
                       console.log (err)
                     }
                     data.push(res.rows);
                 })
-                break;
+                
             }
-        }
+        
         console.log("profile:",prof,"quiz",data);
-        res.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+        result.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+        })
     },
-    newUser:function(req,res){
+    newUser:function(req,result){
         console.log("income:",req.body);
         var hasUser=false;
-        for(let i=0;i<users.length;i++){if(users[i].name==req.body.user){hasUser=true;}}
-        let data={};
-        username=req.body.username;
-        password=req.body.password;
-        age==req.body.age;
-        //data[`username`]=username;
-        //data[`password`]=password;
-        //data['age']=age;
-        //console.log("data:",data);
-        if(!hasUser){
-            client.query(`insert into quiz.users
-            (name,username,password,age)
-            values(${req.body.name},${username},${password},${age})`, (err, res) => {
-                if (err) {
-                  console.log (err)
-                }
-                
-            })
-        //users[`${req.body.name}`]=[data];
-        }
-        //console.log(users[`${req.body.user}`][0]);
-        //let data1 = JSON.stringify(users);
-        //fs.writeFileSync('userInfo.json', data1);
-        res.render('sign_in.ejs');
+        client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
+            if (err) {
+              console.log (err)
+            }
+            console.log(res)
+            if(res.rows[0]!=undefined){hasUser=true;}
+            let username=req.body.username;
+            let password=req.body.password;
+            let age=req.body.age;
+            if(!hasUser){
+                client.query(`insert into quiz.users
+                (name,username,password,age)
+                values('${req.body.name}','${username}','${password}',${age})`, (err, res) => {
+                    if (err) {
+                        console.log (err);
+                    }
+                    result.render('sign_in.ejs');
+                })
+            }        
+        })
     }
 }
