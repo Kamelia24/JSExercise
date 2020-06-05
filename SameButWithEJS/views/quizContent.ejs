@@ -25,25 +25,25 @@
 
   </div>
   <div id="questions" class="row">
-    <% if(id<=4 && id==quiz.correct || id>4 && id-4==quiz.correct) {%>
+    <% if(id==quiz.correct ) {%>
       <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[0]%></a> </div>
     <% }else{ %>
       <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[0]%></a> </div>
     <% } %>
     <% id++; %>
-    <% if(id<=4 && id==quiz.correct || id>4 && id==quiz.correct) {%>
+    <% if(id==quiz.correct) {%>
       <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[1]%></a> </div>
     <% }else{ %>
       <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[1]%></a> </div>
     <% } %>
     <% id++; %>
-    <% if(id<=4 && id==quiz.correct || id>4 && id==quiz.correct) {%>
+    <% if(id==quiz.correct) {%>
       <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[2]%></a> </div>
     <% }else{ %>
       <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[2]%></a> </div>
     <% } %>
     <% id++; %>
-    <% if(id<=4 && id==quiz.correct || id>4 && id==quiz.correct) {%>
+    <% if(id==quiz.correct) {%>
       <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[3]%></a> </div>
     <% }else{ %>
       <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[3]%></a> </div>
@@ -205,10 +205,10 @@ function endQuiz() {
     var corrected=0;
     for (var i = 0; i < pages; i++) {
       if(myAnswers[i]!=undefined){
-      let name=document.getElementsByClassName("col-sm-6")[i].classList
-      console.log(document.getElementsByClassName("col-sm-6")[i].classList)
+      let name=document.getElementsByClassName("col-sm-6")
+      console.log(myAnswers[i],name[(myAnswers[i]-1)*(i+1)])
       let hasCorrect=false;
-      name.forEach((item)=>{if(item=="correct"){hasCorrect=true;}});
+      //name.forEach((item)=>{if(item=="correct"){hasCorrect=true;}});
       if(hasCorrect){
         questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
         corrected++;
