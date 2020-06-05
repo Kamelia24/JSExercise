@@ -22,7 +22,7 @@ var myQuizАll = [
     },
     question1={
         question:[4,"What does ?"],
-        answers:[" Model","nothing","Big ","Browser Object Model"],
+        answers:["Model","nothing","Big","Browser Object Model"],
         correct:4,
         category:'javascript',
         difficulty:"easy"
