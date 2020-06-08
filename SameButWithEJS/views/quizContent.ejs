@@ -15,40 +15,27 @@
 </div>
 <% var myQuiz=sorted;%> 
 <% var page=0; %>
-<% var id=1; %>
+<% var id=0; %>
 <div id="quizContent">
 <% myQuiz.forEach((quiz)=>{%>
-  
+  <% var answers=quiz.answers %>
   <div class="quizQuestions" id=<%= page %> >
 <div class="col-sm-12">
     <h2 id="quizHeader">Question <%=quiz.question[0]%> <br><br> <%=quiz.question[1]%> <br></h2>
 
   </div>
   <div id="questions" class="row">
-    <% if(id==quiz.correct ) {%>
-      <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[0]%></a> </div>
+    <% var corr=1 %>
+    <% answers.forEach((answ)=>{%>
+      
+    <% if(corr==quiz.correct ) {%>
+      <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=answ%></a> </div>
     <% }else{ %>
-      <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[0]%></a> </div>
+      <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=answ%></a> </div>
     <% } %>
-    <% id++; %>
-    <% if(id==quiz.correct) {%>
-      <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[1]%></a> </div>
-    <% }else{ %>
-      <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[1]%></a> </div>
-    <% } %>
-    <% id++; %>
-    <% if(id==quiz.correct) {%>
-      <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[2]%></a> </div>
-    <% }else{ %>
-      <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[2]%></a> </div>
-    <% } %>
-    <% id++; %>
-    <% if(id==quiz.correct) {%>
-      <div class="col-sm-6 correct" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[3]%></a> </div>
-    <% }else{ %>
-      <div class="col-sm-6" onclick='addAnswer(<%= id %>)'> <a data-id=' <%= id %>' class="btn btn-default answer "><%=quiz.answers[3]%></a> </div>
-    <% } %>
-    <% id++; %>
+    <% id++; corr++;%>
+    <% }); %>
+    
   </div>
 <br>
 </div>
@@ -74,6 +61,7 @@ aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:50%"> 0% Co
 <div id="btnYes" onclick="endQuiz()" class="col-xs-5 col-sm-4 btn btn-primary pull-left hide">yes</div>
 <div id="btnNo" onclick="moveBack()" class="col-xs-5 col-sm-4 col-sm-offset-4 col-xs-offset-2 btn btn-primary pull-right hide">no</div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
   var curPage = 0;
   var quizContent=document.getElementById("quizContent");
@@ -165,9 +153,8 @@ function capitalise(str) {
     return str.substr(0, 1).toUpperCase() + str.substr(1);
 }
 function addAnswer(ans){
-  document.getElementsByClassName("col-sm-6")[ans-1].classList.add("selAnswer");
-  if(ans<=4){myAnswers[curPage]=ans;}
-  else{myAnswers[curPage]=ans-4;}
+  document.getElementsByClassName("col-sm-6")[ans].classList.add("selAnswer");
+  myAnswers[curPage]=(ans+1)-curPage*4;
   console.log(myAnswers);
 }
 function check(){
@@ -203,16 +190,19 @@ function endQuiz() {
     var output = "<div class='output'>Quiz Results<BR>";
     var questionResult = "NA";
     var corrected=0;
+    var isCorrect=[];
     for (var i = 0; i < pages; i++) {
       if(myAnswers[i]!=undefined){
       let name=document.getElementsByClassName("col-sm-6")
-      console.log(myAnswers[i],name[(myAnswers[i]-1)*(i+1)])
+      console.log(name[(myAnswers[i]-1)+4*i],name)
       let hasCorrect=false;
-      //name.forEach((item)=>{if(item=="correct"){hasCorrect=true;}});
+      var name1=name[(myAnswers[i]-1)+4*i].classList;
+      name1.forEach((item)=>{if(item=="correct"){hasCorrect=true;}});
       if(hasCorrect){
         questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
-        corrected++;
+        corrected++;isCorrect.push('true');
         }else{
+          isCorrect.push('false');
             questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
         }
       }else{
@@ -231,7 +221,7 @@ function endQuiz() {
     }
     output = output + '<p>You scored ' + corrected + ' out of ' + pages + '</p></div> ';
     document.getElementById("quizContent").innerHTML = output;
-    
+
     var date=new Date();
     var day=date.getDate();
     var month=date.getMonth();
@@ -239,11 +229,10 @@ function endQuiz() {
     var hour=date.getHours();
     var minutes=date.getMinutes();
     let info={
-        user:document.getElementById("username").value,
-        score:`${corrected}/${myQuiz.length}`,
+        score:corrected,
         date:`${day}.${month}.${year} ${hour}:${minutes}`,
-        category:`${document.getElementById("category").value}`,
-        difficulty:`${document.getElementById("difficulty").value}`
+        answers:myAnswers,
+        correct:isCorrect
     }
     console.log(info);
     $.ajax({
