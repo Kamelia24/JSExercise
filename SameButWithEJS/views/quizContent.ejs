@@ -63,22 +63,15 @@ aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:50%"> 0% Co
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-  var curPage = 0;
-  var quizContent=document.getElementById("quizContent");
-  var myHeader = document.getElementById("quizHeader");
-  var progressBar = document.getElementById("progressBar");
-  var myQuestion = document.getElementById("questions");
-  var btnNext = document.getElementById("btnNext");
+var curPage = 0;
+var quizContent=document.getElementById("quizContent");
+var progressBar = document.getElementById("progressBar");
+var btnNext = document.getElementById("btnNext");
 var btnPrevious = document.getElementById("btnPrevious");
 var btnFinish = document.getElementById("finishQuiz");
 var myAnswers=[];
-//btnNext.addEventListener("click", moveNext);
-//btnPrevious.addEventListener("click", moveBack);
-//btnFinish.addEventListener("click", check);
-var current=0;
 var cur=document.getElementsByClassName("quizQuestions");
 var pages=cur.length;
-console.log("pages",pages);
 function addHide(){
   
   for(let i=0;i<pages;i++){
@@ -104,33 +97,18 @@ addHide();
         btnNext.classList.add("hide");
         btnFinish.classList.remove("hide");
     }
-    /*let quest=`Question ${curPage+1} <br><br> ${myQuiz[curPage].question} <br>`;
-    myHeader.innerHTML = quest;///add question
-    for (var i = 0; i < 4; i++) {
-        var curNode = myQuestion.children[i];
-        curNode.childNodes[1].innerHTML = capitalise(myQuiz[curPage].answers[i]); ///add possible answers
-        //check if answered already
-        if (myAnswers[curPage] == (i + 1)) {
-            curNode.classList.add("selAnswer");
-        } else {
-            curNode.classList.remove("selAnswer");
-        }
-    }*/
     console.log("remove",curPage);
     document.getElementById(curPage).classList.remove("hide");
     ///update progress bar
     var increment = Math.ceil((curPage) / ( pages) * 100);
     progressBar.style.width = (increment) + '%';
     progressBar.innerHTML = (increment) + '%';
-    //outputed();
 }
 
 function moveNext() {
-  //console.log(myQuiz);
     if (curPage < pages) {
         curPage++;
         addHide();
-        //checkPage(curPage);
     } else {
         if (myQuiz.length >= curPage) {
             endQuiz();
@@ -146,7 +124,6 @@ function moveBack() {
     if (curPage > 0) {
         curPage--;
         addHide();
-        checkPage(curPage);
     }
 } 
 function capitalise(str) {
@@ -155,7 +132,6 @@ function capitalise(str) {
 function addAnswer(ans){
   document.getElementsByClassName("col-sm-6")[ans].classList.add("selAnswer");
   myAnswers[curPage]=(ans+1)-curPage*4;
-  console.log(myAnswers);
 }
 function check(){
     var isAnswered=false;
@@ -165,12 +141,6 @@ function check(){
         }
     }
     if(isAnswered){
-     /* $.ajax({
-        url: "http://localhost:3000/surePage",
-        type:   'GET',
-        success: console.log("success"),
-        error: console.log("error")
-    });*/
         finishing.classList.remove("hide");
         btnYes.classList.remove("hide");
         btnNo.classList.remove("hide");
@@ -182,7 +152,6 @@ function check(){
     }
 }
 function endQuiz() {
-    console.log();
     btnYes.classList.add("hide");
     btnNo.classList.add("hide");
     finishing.classList.add("hide");
@@ -208,16 +177,7 @@ function endQuiz() {
       }else{
         questionResult = '<span>Not Answered</span>';
       }
-      /*
-        if (myQuiz[i].correct == myQuiz[i].answers[myAnswers[i]-1]) {
-            questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
-            corrected++;
-        }else if(myQuiz[i].correct!=myQuiz[i].answers[myAnswers[i]-1] && myAnswers[i]){
-            questionResult = '<span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>';
-        }else {
-            questionResult = '<span>Not Answered</span>';
-        }*/
-        output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
+      output = output + '<p>Question ' + (i + 1) + ' ' + questionResult + '</p> ';
     }
     output = output + '<p>You scored ' + corrected + ' out of ' + pages + '</p></div> ';
     document.getElementById("quizContent").innerHTML = output;
@@ -234,7 +194,6 @@ function endQuiz() {
         answers:myAnswers,
         correct:isCorrect
     }
-    console.log(info);
     $.ajax({
         url: "http://localhost:3000/addUser",
         type:   'POST',
@@ -255,7 +214,6 @@ function endQuiz() {
         },
         error: function() {
             $("#failed").css("visibility","visible")
-            //document.getElementById("SubmitButton").disabled = false;
         }
     });
 }
