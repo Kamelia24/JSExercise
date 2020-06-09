@@ -1,4 +1,6 @@
 let users;
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 const { Client} = require('pg');
 client = new Client({
     host: 'localhost',
@@ -78,16 +80,19 @@ module.exports={
     logInVerify:function(req,result){
         console.log("income:",req.body);
         let outp={};
-        let hasPass=false;
+        
         var userPassword;
+        var password=req.body.password;
         client.query(`SELECT password FROM quiz.users WHERE username='${req.body.username}'`, (err, res) => {
             if (err) {
               console.log (err)
             }
             userPassword=res.rows[0];
-            hasPass=true;
-            console.log("result:",userPassword);
-            if(hasPass && userPassword!=undefined && req.body.password==userPassword.password){
+            console.log("result:",userPassword,password);
+            bcrypt.compare(password, userPassword.password, function(err, res) {
+            var isCorrect=res;
+            console.log(err,res)
+            if(userPassword!=undefined && isCorrect){
                 let categories=[];
                 let difficulties=[];
                 client.query('SELECT category FROM quiz.categories', (err, res) => {
@@ -114,6 +119,7 @@ module.exports={
                 console.log("correct");
                 
             }else{outp="Incorect username or password,please try again!";result.send(outp);}
+            });
     
         })
             
@@ -161,14 +167,20 @@ module.exports={
             let username=req.body.username;
             let password=req.body.password;
             let age=req.body.age;
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+               var hashedPassword = hash;
                 client.query(`insert into quiz.users
                 (name,username,password,age)
-                values('${req.body.name}','${username}','${password}',${age})`, (err, res) => {
+                values('${req.body.name}','${username}','${hashedPassword}',${age})`, (err, res) => {
                     if (err) {
                         console.log (err);
                     }
                     result.render('sign_in.ejs');
                 })
+            });
+            
+           
+               
             }else{res.send("This username already exists!Try another one.")}      
         })
     }
