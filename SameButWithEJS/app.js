@@ -3,8 +3,6 @@ const app = express();
 const bodyParser= require("body-parser");
 const session = require('express-session');
 const Router = require('./routes/routes.js');
-
-//const { check, validationResult, matchedData } = require('express-validator');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
