@@ -1,18 +1,11 @@
-const Data=require('../data/data.js');
-//const quiz;
-//const answers;
-const quizAll=Data;
 var cat;
 var dif;
-const fs=require('fs');
-var rawdata=fs.readFileSync('data/userInfo.json');
-let users=JSON.parse(rawdata);
 const { Client} = require('pg');
 client = new Client({
     host: 'localhost',
     user: 'postgres',
     password: '1234',
-	database: 'second',
+	database: 'quiz',
 	port:5432
 });
 client.connect();
@@ -50,16 +43,8 @@ module.exports={
             console.log(req.body);
             var sorted=[];
            
-            cat=req.body.category;//console.log(cat);
-            dif=req.body.difficulty;//console.log(dif);
-            /*for(var i=0;i<quizAll.length;i++){
-                //console.log(quizAll[i].category,cat,quizAll[i].difficulty,dif);
-                if(`${quizAll[i].category}`==cat && `${quizAll[i].difficulty}`==dif){
-                    //console.log(quizAll[i]);
-                    sorted.push(quizAll[i]);
-                    quizLength++;
-                }
-            }*/
+            cat=req.body.category;
+            dif=req.body.difficulty;
             client.query(`SELECT question,answers,correct_answer FROM quiz.question_info inf
             left join quiz.categories cat on inf.category_id=cat.id
             left join quiz.difficulties dif on inf.difficulty_id=dif.id
@@ -79,9 +64,7 @@ module.exports={
                         if(res.rows[i+f]["correct_answer"]==true){
                         quizQuestion.correct=f+1;
                         }
-                        //console.log(res.rows[i+f]);
                         f++;
-                        //console.log(i,f);
                    }while( res.rows[i+f]!=undefined && res.rows[i+f-1]["question"]==res.rows[i+f]["question"]);
                    
                    console.log(quizQuestion.answers);
@@ -100,9 +83,6 @@ module.exports={
     },
     addUserScore:function(req,result){
         console.log(req.body);
-        var hasUser=false;
-        for(key in users){if(users[key][0].username==req.body.user){name=key;hasUser=true;}}
-        let scored={};
         score=req.body.score;
         date=req.body.date;
         answers=req.body.answers;
@@ -145,26 +125,20 @@ module.exports={
                                     console.log("question id ",quest_id[0]['id'])
                                     var answersID;
                                     for(let f=0;f<quest_id.length;f++){
-                                    //for(let i=0;i<answers.length;i++){
                                         client.query(`select id from quiz.question_answers where question_id=${(quest_id[f]).id} order by id asc`, (err, res) => {
                                             if (err) {
                                                 console.log (err)
                                             }
-
                                             answersID=res.rows[answers[f]].id-1;
                                             console.log("answersID ",res.rows[answers[f]].id-1);
-                                            //for(let i=0;i<answersID.length;i++){
-                                                console.log(quest_id[f]['id'],answersID,correct[f],quizID.id)
-                                                client.query(`INSERT INTO quiz.user_answers (question_id,answer_id,is_correct,quiz_id) values(${quest_id[f]['id']},${answersID},${correct[f]},${quizID.id})`, (err, res) => {
-                                                    if (err) {
-                                                        console.log (err)
-                                                    }
-                                                
-                                                })
-                                            //}
+                                            console.log(quest_id[f]['id'],answersID,correct[f],quizID.id)
+                                            client.query(`INSERT INTO quiz.user_answers (question_id,answer_id,is_correct,quiz_id) values(${quest_id[f]['id']},${answersID},${correct[f]},${quizID.id})`, (err, res) => {
+                                                if (err) {
+                                                    console.log (err)
+                                                }
+                                            })
                                         })
-                                    //}
-                                }
+                                    }
                                 })
                             })
                         })
@@ -172,7 +146,5 @@ module.exports={
                 })
             }
         })
-        //console.log(users[`${req.body.user}`][0]);
-        
     }
 }
