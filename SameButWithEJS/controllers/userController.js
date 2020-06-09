@@ -1,13 +1,10 @@
-const fs=require('fs');
-var rawdata=fs.readFileSync('data/userInfo.json');
 let users;
-
 const { Client} = require('pg');
 client = new Client({
     host: 'localhost',
     user: 'postgres',
     password: '1234',
-	database: 'second',
+	database: 'quiz',
 	port:5432
 });
 client.connect();
@@ -49,7 +46,34 @@ module.exports={
         }
     },
     register:function(req, res){ 
-        res.render('sign_up'); 
+        if(req.session.loggedin){
+            var data=[];
+            var prof=[];
+            console.log("username:",req.session.username)
+            client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
+                if (err) {
+                  console.log (err)
+                }
+                users=res.rows;
+                if(users!=undefined){
+                    console.log(users)
+                    prof.push(users[0]["name"],users[0]["age"],users[0]["username"]);
+                    client.query(`SELECT * FROM quiz.quiz_results where user_id=${users[0]["id"]}`, (err, res) => {
+                        if (err) {
+                          console.log (err)
+                        }
+                        data.push(res.rows);
+                    })
+                    
+                }
+            
+            console.log("profile:",prof,"quiz",data);
+            result.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+            })
+            }else{
+            res.render('sign_up'); 
+            }
+        
     },
     logInVerify:function(req,result){
         console.log("income:",req.body);
@@ -132,17 +156,11 @@ module.exports={
     },
     newUser:function(req,result){
         console.log("income:",req.body);
-        var hasUser=false;
-        client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
-            if (err) {
-              console.log (err)
-            }
-            console.log(res)
-            if(res.rows[0]!=undefined){hasUser=true;}
+        client.query(`SELECT * FROM quiz.users WHERE username='${req.body.username}'`, (err, res) => {
+            if(res.rows[0]===undefined){
             let username=req.body.username;
             let password=req.body.password;
             let age=req.body.age;
-            if(!hasUser){
                 client.query(`insert into quiz.users
                 (name,username,password,age)
                 values('${req.body.name}','${username}','${password}',${age})`, (err, res) => {
@@ -151,7 +169,7 @@ module.exports={
                     }
                     result.render('sign_in.ejs');
                 })
-            }        
+            }else{res.send("This username already exists!Try another one.")}      
         })
     }
 }
