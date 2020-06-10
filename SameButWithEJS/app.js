@@ -13,5 +13,5 @@ app.use(session({
 	saveUninitialized: true
 }));
 app.use(Router);
-var port=3000;
+let port=3000;
 app.listen(port,()=>{console.log(`Node JS API is listening on port: ${port}`);});
