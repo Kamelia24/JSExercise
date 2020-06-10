@@ -13,19 +13,19 @@
      <% } %>
     
 </div>
-<% var myQuiz=sorted;%> 
-<% var page=0; %>
-<% var id=0; %>
+<% let myQuiz=sorted;%> 
+<% let page=0; %>
+<% let id=0; %>
 <div id="quizContent">
 <% myQuiz.forEach((quiz)=>{%>
-  <% var answers=quiz.answers %>
+  <% let answers=quiz.answers %>
   <div class="quizQuestions" id=<%= page %> >
 <div class="col-sm-12">
     <h2 id="quizHeader">Question <%=quiz.question[0]%> <br><br> <%=quiz.question[1]%> <br></h2>
 
   </div>
   <div id="questions" class="row">
-    <% var corr=1 %>
+    <% let corr=1 %>
     <% answers.forEach((answ)=>{%>
       
     <% if(corr==quiz.correct ) {%>
@@ -41,7 +41,7 @@
 </div>
 <% page++; %>
 <%});%>
-<% var quizlength={lengthp:page} %>
+<% let quizlength={lengthp:page} %>
 <div class="row pageMovement">
   <div onclick='moveBack()' id="btnPrevious" class="col-xs-5 col-sm-4 btn btn-primary pull-left">Previous</div>
   <div id="btnNext" onclick='moveNext()' class="col-xs-5 col-sm-4 col-sm-offset-4 col-xs-offset-2 btn btn-primary pull-right">Next</div>
@@ -63,15 +63,15 @@ aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:50%"> 0% Co
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-var curPage = 0;
-var quizContent=document.getElementById("quizContent");
-var progressBar = document.getElementById("progressBar");
-var btnNext = document.getElementById("btnNext");
-var btnPrevious = document.getElementById("btnPrevious");
-var btnFinish = document.getElementById("finishQuiz");
-var myAnswers=[];
-var cur=document.getElementsByClassName("quizQuestions");
-var pages=cur.length;
+let curPage = 0;
+let quizContent=document.getElementById("quizContent");
+let progressBar = document.getElementById("progressBar");
+let btnNext = document.getElementById("btnNext");
+let btnPrevious = document.getElementById("btnPrevious");
+let btnFinish = document.getElementById("finishQuiz");
+let myAnswers=[];
+let cur=document.getElementsByClassName("quizQuestions");
+let pages=cur.length;
 function addHide(){
   
   for(let i=0;i<pages;i++){
@@ -100,7 +100,7 @@ addHide();
     console.log("remove",curPage);
     document.getElementById(curPage).classList.remove("hide");
     ///update progress bar
-    var increment = Math.ceil((curPage) / ( pages) * 100);
+    let increment = Math.ceil((curPage) / ( pages) * 100);
     progressBar.style.width = (increment) + '%';
     progressBar.innerHTML = (increment) + '%';
 }
@@ -134,7 +134,7 @@ function addAnswer(ans){
   myAnswers[curPage]=(ans+1)-curPage*4;
 }
 function check(){
-    var isAnswered=false;
+    let isAnswered=false;
     for(let i=0;i<pages;i++){
         if(myAnswers[i]===undefined){
             isAnswered=true;
@@ -156,16 +156,16 @@ function endQuiz() {
     btnNo.classList.add("hide");
     finishing.classList.add("hide");
     quizContent.classList.remove("hide");
-    var output = "<div class='output'>Quiz Results<BR>";
-    var questionResult = "NA";
-    var corrected=0;
-    var isCorrect=[];
-    for (var i = 0; i < pages; i++) {
+    let output = "<div class='output'>Quiz Results<BR>";
+    let questionResult = "NA";
+    let corrected=0;
+    let isCorrect=[];
+    for (let i = 0; i < pages; i++) {
       if(myAnswers[i]!=undefined){
       let name=document.getElementsByClassName("col-sm-6")
       console.log(name[(myAnswers[i]-1)+4*i],name)
       let hasCorrect=false;
-      var name1=name[(myAnswers[i]-1)+4*i].classList;
+      let name1=name[(myAnswers[i]-1)+4*i].classList;
       name1.forEach((item)=>{if(item=="correct"){hasCorrect=true;}});
       if(hasCorrect){
         questionResult = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>';
@@ -182,12 +182,12 @@ function endQuiz() {
     output = output + '<p>You scored ' + corrected + ' out of ' + pages + '</p></div> ';
     document.getElementById("quizContent").innerHTML = output;
 
-    var date=new Date();
-    var day=date.getDate();
-    var month=date.getMonth();
-    var year=date.getFullYear();
-    var hour=date.getHours();
-    var minutes=date.getMinutes();
+    let date=new Date();
+    let day=date.getDate();
+    let month=date.getMonth();
+    let year=date.getFullYear();
+    let hour=date.getHours();
+    let minutes=date.getMinutes();
     let info={
         score:corrected,
         date:`${day}.${month}.${year} ${hour}:${minutes}`,
@@ -200,7 +200,7 @@ function endQuiz() {
         data: info ,
         success: function(msg){
             console.log(msg);
-            for(var key in msg){
+            for(let key in msg){
                 if(key=="empty"){
                     let output='<div>You are new here,better start the quiz. :) </div>';
                     document.getElementById("showResult").innerHTML=output;
