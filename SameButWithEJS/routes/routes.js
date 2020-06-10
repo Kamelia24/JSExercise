@@ -11,5 +11,5 @@ router.post("/sort",controller.sortQuiz);
 router.post("/addUser",controller.addUserScore);
 router.post("/addUserData",userController.newUser);
 router.post("/checkUserData",userController.logInVerify);
-router.get("/profile",userController.login);
+router.get("/profile",userController.profileInfo);
 module.exports = router;
