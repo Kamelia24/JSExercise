@@ -1,5 +1,5 @@
-var cat;
-var dif;
+let cat;
+let dif;
 require('dotenv').config();
 const { Client} = require('pg');
 client = new Client({
@@ -39,10 +39,10 @@ module.exports={
         }) 
     },
     sortQuiz:function(req, result){
-        var quizLength=0;
-        var curPage=0;
+        let quizLength=0;
+        let curPage=0;
             console.log(req.body);
-            var sorted=[];
+            let sorted=[];
            
             cat=req.body.category;
             dif=req.body.difficulty;
@@ -124,7 +124,7 @@ module.exports={
                                     }
                                     quest_id=res.rows;
                                     console.log("question id ",quest_id[0]['id'])
-                                    var answersID;
+                                    let answersID;
                                     for(let f=0;f<quest_id.length;f++){
                                         client.query(`select id from quiz.question_answers where question_id=${(quest_id[f]).id} order by id asc`, (err, res) => {
                                             if (err) {
