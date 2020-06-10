@@ -12,13 +12,6 @@ client = new Client({
     port:process.env.DB_PORT
 });
 client.connect();
-client.query('SELECT * FROM quiz.users', (err, res) => {
-    if (err) {
-      console.log (err)
-    }
-    users=res.rows;
-})
-
 module.exports={
     login:function(req, result){ 
         if(req.session.loggedin){
@@ -39,8 +32,8 @@ module.exports={
         console.log("income:",req.body);
         let outp={};
         
-        var userPassword;
-        var password=req.body.password;
+        let userPassword;
+        let password=req.body.password;
         client.query(`SELECT password FROM quiz.users WHERE username='${req.body.username}'`, (err, res) => {
             if (err) {
               console.log (err)
@@ -48,7 +41,7 @@ module.exports={
             userPassword=res.rows[0];
             console.log("result:",userPassword,password);
             bcrypt.compare(password, userPassword.password, function(err, res) {
-            var isCorrect=res;
+            let isCorrect=res;
             console.log(err,res)
             if(userPassword!=undefined && isCorrect){
                 let categories=[];
@@ -94,8 +87,6 @@ module.exports={
           }
     },
     profileInfo:function(req,result){
-        var data=[];
-        var prof=[];
         console.log("username:",req.session.username)
         client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
             if (err) {
@@ -104,18 +95,21 @@ module.exports={
             users=res.rows;
             if(users!=undefined){
                 console.log(users)
-                prof.push(users[0]["name"],users[0]["age"],users[0]["username"]);
-                client.query(`SELECT * FROM quiz.quiz_results where user_id=${users[0]["id"]}`, (err, res) => {
+                client.query(`SELECT score,date_taken,category,difficulty
+                 FROM quiz.quiz_results res
+                 left join quiz.categories cat on res.category_id=cat.id
+                 left join quiz.difficulties dif on res.difficulty_id=dif.id
+                 where user_id=${users[0]["id"]}`, (err, res) => {
                     if (err) {
                       console.log (err)
                     }
-                    data.push(res.rows);
+                    console.log("profile:",prof,"quiz",data);
+                    result.render('profile.ejs',{prof:[users[0]["name"],users[0]["age"],users[0]["username"]],data:res.rows,session:req.session.loggedin})
                 })
                 
             }
         
-        console.log("profile:",prof,"quiz",data);
-        result.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
+        
         })
     },
     newUser:function(req,result){
@@ -126,7 +120,7 @@ module.exports={
             let password=req.body.password;
             let age=req.body.age;
             bcrypt.hash(password, saltRounds, function(err, hash) {
-               var hashedPassword = hash;
+               let hashedPassword = hash;
                 client.query(`insert into quiz.users
                 (name,username,password,age)
                 values('${req.body.name}','${username}','${hashedPassword}',${age})`, (err, res) => {
