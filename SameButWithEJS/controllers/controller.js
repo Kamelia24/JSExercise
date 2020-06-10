@@ -1,12 +1,13 @@
 var cat;
 var dif;
+require('dotenv').config();
 const { Client} = require('pg');
 client = new Client({
-    host: 'localhost',
-    user: 'postgres',
-    password: '1234',
-	database: 'quiz',
-	port:5432
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+	database: process.env.DB_DATABASE,
+    port:process.env.DB_PORT
 });
 client.connect();
 module.exports={
@@ -129,9 +130,9 @@ module.exports={
                                             if (err) {
                                                 console.log (err)
                                             }
-                                            answersID=res.rows[answers[f]].id-1;
-                                            console.log("answersID ",res.rows[answers[f]].id-1);
+                                            answersID=res.rows[answers[f]-1].id-1;
                                             console.log(quest_id[f]['id'],answersID,correct[f],quizID.id)
+                                            console.log("answersID ",res.rows,answers[f]);
                                             client.query(`INSERT INTO quiz.user_answers (question_id,answer_id,is_correct,quiz_id) values(${quest_id[f]['id']},${answersID},${correct[f]},${quizID.id})`, (err, res) => {
                                                 if (err) {
                                                     console.log (err)
