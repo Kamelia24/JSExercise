@@ -19,12 +19,14 @@
                     age= <%= prof[1]; %> <br>
                     username= <%= prof[2]; %> <br>
                     <% if(data[0]!=undefined){ %>
+                        --- <br>
                         your Quiz rezults: <br>
                         <% data.forEach((data)=>{ %>
-                            date: <%= data.date; %> <br>
+                            date: <%= data.date_taken; %> <br>
                             category: <%= data.category; %> <br>
                             difficulty: <%= data.difficulty; %> <br>
                             score: <%= data.score; %> <br>
+                            ---<br>
                         <% }); %>
                     <% }else{%>
                         You haven't taken any quizes yet :( 
