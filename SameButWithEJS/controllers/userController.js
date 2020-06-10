@@ -1,13 +1,15 @@
 let users;
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const { Client} = require('pg');
+console.log(process.env.DB_HOST);
 client = new Client({
-    host: 'localhost',
-    user: 'postgres',
-    password: '1234',
-	database: 'quiz',
-	port:5432
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+	database: process.env.DB_DATABASE,
+    port:process.env.DB_PORT
 });
 client.connect();
 client.query('SELECT * FROM quiz.users', (err, res) => {
@@ -20,61 +22,17 @@ client.query('SELECT * FROM quiz.users', (err, res) => {
 module.exports={
     login:function(req, result){ 
         if(req.session.loggedin){
-        var data=[];
-        var prof=[];
-        console.log("username:",req.session.username)
-        client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
-            if (err) {
-              console.log (err)
-            }
-            users=res.rows;
-            if(users!=undefined){
-                console.log(users)
-                prof.push(users[0]["name"],users[0]["age"],users[0]["username"]);
-                client.query(`SELECT * FROM quiz.quiz_results where user_id=${users[0]["id"]}`, (err, res) => {
-                    if (err) {
-                      console.log (err)
-                    }
-                    data.push(res.rows);
-                })
-                
-            }
-        
-        console.log("profile:",prof,"quiz",data);
-        result.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
-        })
+            result.redirect('/profile')
         }else{
-        result.render('sign_in'); 
+            result.render('sign_in'); 
         }
     },
     register:function(req, res){ 
         if(req.session.loggedin){
-            var data=[];
-            var prof=[];
-            console.log("username:",req.session.username)
-            client.query(`SELECT * FROM quiz.users WHERE username='${req.session.username}'`, (err, res) => {
-                if (err) {
-                  console.log (err)
-                }
-                users=res.rows;
-                if(users!=undefined){
-                    console.log(users)
-                    prof.push(users[0]["name"],users[0]["age"],users[0]["username"]);
-                    client.query(`SELECT * FROM quiz.quiz_results where user_id=${users[0]["id"]}`, (err, res) => {
-                        if (err) {
-                          console.log (err)
-                        }
-                        data.push(res.rows);
-                    })
-                    
-                }
-            
-            console.log("profile:",prof,"quiz",data);
-            result.render('profile.ejs',{prof:prof,data:data,session:req.session.loggedin})
-            })
-            }else{
+            result.redirect('/profile')
+        }else{
             res.render('sign_up'); 
-            }
+        }
         
     },
     logInVerify:function(req,result){
