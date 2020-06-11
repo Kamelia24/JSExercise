@@ -119,6 +119,7 @@ module.exports={
             let username=req.body.username;
             let password=req.body.password;
             let age=req.body.age;
+            if(age<10 || age >90){result.send("Age is not valid!");}
             bcrypt.hash(password, saltRounds, function(err, hash) {
                let hashedPassword = hash;
                 client.query(`insert into quiz.users
