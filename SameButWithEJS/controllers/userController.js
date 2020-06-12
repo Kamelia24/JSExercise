@@ -112,9 +112,74 @@ module.exports={
         
         })
     },
-    newUser:function(req,result){
+    newUser:async function(req,result){
         console.log("income:",req.body);
-        client.query(`SELECT * FROM quiz.users WHERE username='${req.body.username}'`, (err, res) => {
+        let username=req.body.username;
+        let body=req.body;
+            let promise=new Promise((reoslve,reject)=>{
+                client.query(`SELECT * FROM quiz.users WHERE username='${username}'`, (err, res) => {
+                    if(res.rows[0]===undefined){
+                    reoslve(body);
+                    }else{reject('User already exists')}  
+                })
+            });
+            let hasUserIs=await promise;
+            console.log(hasUserIs)
+            if(typeof hasUserIs !='string'){
+                let username=body.username;
+                let password=body.password;
+                let age=body.age;
+                let name=body.name;
+                console.log(username,password,age,name)
+                if(age<10 || age >90){result.send("Age is not valid!");}
+                    bcrypt.hash(password, saltRounds, function(err, hash) {
+                    let hashedPassword = hash;
+                    client.query(`insert into quiz.users
+                    (name,username,password,age)
+                    values('${name}','${username}','${hashedPassword}',${age})`, (err, res) => {
+                        if (err) {
+                            console.log (err);
+                        }
+                        result.render('sign_in.ejs');
+                    })
+                });
+                }else{
+                    result.send(hasUserIs)
+                }
+            
+    }/*,
+    newUser:function(req,result){    
+        function isThereUser(username){
+            return new Promise((reoslve,reject)=>{
+                client.query(`SELECT * FROM quiz.users WHERE username='${username}'`, (err, res) => {
+                    if(res.rows[0]===undefined){
+                    reoslve(body);
+                    }else{reject('User already exists')}  
+                })
+            })
+        }
+        isThereUser(username).then((body)=>{
+            let username=body.username;
+            let password=body.password;
+            let age=body.age;
+            let name=body.name;
+            console.log(username,password,age,name)
+            if(age<10 || age >90){result.send("Age is not valid!");}
+            bcrypt.hash(password, saltRounds, function(err, hash) {
+                let hashedPassword = hash;
+                client.query(`insert into quiz.users
+                (name,username,password,age)
+                values('${name}','${username}','${hashedPassword}',${age})`, (err, res) => {
+                    if (err) {
+                        console.log (err);
+                    }
+                    result.render('sign_in.ejs');
+                })
+            });
+        }).catch((err)=>{result.send(err)})
+    }*/ /*,
+    newUser:function(req,result){    
+    client.query(`SELECT * FROM quiz.users WHERE username='${req.body.username}'`, (err, res) => {
             if(res.rows[0]===undefined){
             let username=req.body.username;
             let password=req.body.password;
@@ -136,5 +201,5 @@ module.exports={
                
             }else{res.send("This username already exists!Try another one.")}      
         })
-    }
+    }*/
 }
