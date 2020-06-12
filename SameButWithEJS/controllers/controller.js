@@ -1,5 +1,5 @@
-let cat;
-let dif;
+var cat;
+var dif;
 require('dotenv').config();
 const { Client} = require('pg');
 client = new Client({
@@ -81,8 +81,103 @@ module.exports={
                 
                 })
             
-    },
-    addUserScore:function(req,result){
+    },addUserScore:async function(req,result){
+        console.log(req.body);
+        score=req.body.score;
+        date=req.body.date;
+        answers=req.body.answers;
+        correct=req.body.correct;
+        username=req.session.username;
+        console.log(score,date,answers,cat,dif,req.session.username,correct);
+        let promise= new Promise((resolve,reject)=>{
+            client.query(`SELECT id FROM quiz.users where username='${username}'`, (err, res) => {
+                if (err) {
+                    result.send ('Error')
+                }else if(res.rows[0]!=undefined){
+                //userID=;
+                resolve(res.rows[0]);
+                console.log("userID ",res.rows[0]);
+            }else{result.send('Username not correct');}
+            })
+        });
+        let userID=await promise;
+        let promise1=new Promise((resolve,reject)=>{
+            client.query(`SELECT id from quiz.categories where category='${cat}'`, (err, res) => {
+                if (err) {
+                    result.send('Error')
+                }else{
+                //cat=res.rows[0];
+                resolve(res.rows[0]);
+                console.log("category id ",res.rows[0]);
+                }
+            })
+        })
+        cat=await promise1;
+        let promise2=new Promise((resolve,reject)=>{
+            client.query(`SELECT id FROM quiz.difficulties where difficulty='${dif}'`, (err, res) => {
+                if (err) {
+                    result.send('Error')
+                }else{
+                //dif=res.rows[0];
+                resolve(res.rows[0])
+                console.log("difficulty id ",res.rows[0])
+                }
+            })
+        })
+        dif=await promise2;
+        let promise3=new Promise((resolve,reject)=>{
+            client.query(`INSERT INTO quiz.quiz_results (score,date_taken,category_id,difficulty_id,user_id) VALUES (${score},current_timestamp,${cat.id},${dif.id},${userID.id})`, (err, res) => {
+                if (err) {
+                    result.send('Error')
+                }else{
+                    resolve('Success');
+                }
+            })
+        })
+        let insert1=await promise3;
+        let promise4=new Promise((resolve,reject)=>{
+            client.query(`SELECT id FROM quiz.quiz_results order by id desc limit 1`, (err, res) => {
+                if (err) {
+                    result.send('Error')
+                }else{
+                //quizID=res.rows[0];
+                resolve(res.rows[0]);
+                console.log("quizID ",res.rows[0])
+                }
+            })
+        })
+        let quizID=await promise4;
+        let promise5=new Promise((resolve,reject)=>{
+            client.query(`SELECT id FROM quiz.question_info where category_id=${cat.id} and difficulty_id=${dif.id}`, (err, res) => {
+                if (err) {
+                    result.send ('Error');
+                }else{
+                //quest_id=res.rows;
+                resolve(res.rows)
+                console.log("question id ",res.rows)
+                }
+            })
+        })
+        let quest_id=await promise5;
+        let answersID;
+        for(let f=0;f<quest_id.length;f++){
+            client.query(`select id from quiz.question_answers where question_id=${(quest_id[f]).id} order by id asc`, (err, res) => {
+                if (err) {
+                    result.send('Error')
+                }
+                answersID=res.rows[answers[f]-1].id-1;
+                console.log(quest_id[f]['id'],answersID,correct[f],quizID.id)
+                console.log("answersID ",res.rows,answers[f]);
+                client.query(`INSERT INTO quiz.user_answers (question_id,answer_id,is_correct,quiz_id) values(${quest_id[f]['id']},${answersID},${correct[f]},${quizID.id})`, (err, res) => {
+                    if (err) {
+                        result.send('Error')
+                    }
+                })
+            })
+        }
+    
+    }
+    /*addUserScore:function(req,result){
         console.log(req.body);
         score=req.body.score;
         date=req.body.date;
@@ -147,5 +242,5 @@ module.exports={
                 })
             }
         })
-    }
+    }*/
 }
