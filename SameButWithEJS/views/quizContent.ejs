@@ -130,6 +130,8 @@ function capitalise(str) {
     return str.substr(0, 1).toUpperCase() + str.substr(1);
 }
 function addAnswer(ans){
+  if(myAnswers[curPage]!=undefined){
+    document.getElementsByClassName("col-sm-6")[myAnswers[curPage]+curPage*4-1].classList.remove("selAnswer");}
   document.getElementsByClassName("col-sm-6")[ans].classList.add("selAnswer");
   myAnswers[curPage]=(ans+1)-curPage*4;
 }
